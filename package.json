@@ -28,6 +28,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "cqrs": "^3.1.0",
+    "http-problem-details": "^0.1.5",
     "joi": "^17.13.3",
     "nodemon": "^3.1.7",
     "passport": "^0.7.0",
