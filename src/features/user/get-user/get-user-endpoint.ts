@@ -1,9 +1,9 @@
 import { Controller, Get, Query, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { QueryBus } from "cqrs";
+import { CommandBus } from "cqrs";
 import { GetUserQuery } from "./get-user-handler";
 import { UserModel } from "../userModel";
- 
+
 @ApiBearerAuth()
 @ApiTags('Users')
 @UseGuards()
@@ -13,7 +13,7 @@ import { UserModel } from "../userModel";
 })
 export class GetUserController {
     constructor(
-        private readonly queryBus: QueryBus
+        private readonly queryBus: CommandBus
     ) { }
 
     @Get()
@@ -27,7 +27,6 @@ export class GetUserController {
             userId: id
         }));
 
-        //@ts-ignore 
-         return result;
+        return result;
     }
 }

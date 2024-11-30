@@ -1,9 +1,9 @@
-import { IQueryHandler, QueryHandler } from "cqrs";
+import { CommandHandler, ICommandHandler } from "cqrs";
 import { UserModel } from "../userModel";
 import Joi from "joi";
-import { IUserRepository } from "src/core/repositories/interfaces/iuser.repository";
+import { IUserRepository } from "src/core/repositories/iuser.repository";
 import { Inject } from "@nestjs/common";
-import { UserNotFoundError } from "src/core/errors/userErrors";
+import { UserNotFoundException } from "src/core/errors/userErrors";
 
 
 export class GetUserQuery {
@@ -22,28 +22,23 @@ const getUserQueryValidations = {
 };
 
 
-@QueryHandler(GetUserQuery)
-export class GetUserHandler implements IQueryHandler<GetUserQuery, UserModel> {
+@CommandHandler(GetUserQuery)
+export class GetUserHandler implements ICommandHandler<GetUserQuery> {
     constructor(
         @Inject('IUserRepository') private readonly userRepository: IUserRepository,
     ) { }
 
-    //@ts-ignore
-    public async execute(query: GetUserQuery): Promise<UserModel> {
+     public async execute(query: GetUserQuery): Promise<UserModel> {
  
         await getUserQueryValidations.params.validateAsync(query);
 
         const user = await this.userRepository.getUserByIdAsync(query.userId);
 
         if (!user) {
-            throw new UserNotFoundError(query.userId);
+            throw new UserNotFoundException(query.userId);
         }
  
-        const result = new UserModel({
-            // id: user.id,
-            // firstName: user.firstName,
-            // lastName: user.lastName,
-            // email: user.email, 
+        const result = new UserModel({ 
             ...user,
             isEmailVerified: user.emailConfirmed,
         });

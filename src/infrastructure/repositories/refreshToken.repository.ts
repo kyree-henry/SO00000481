@@ -3,7 +3,7 @@ import { Repository } from "typeorm";
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from "@nestjs/typeorm";
 import { RefreshToken } from "src/domain/entities/refreshToken";
-import { IRefreshTokenRepository } from "src/core/repositories/interfaces/irefreshtoken.repository";
+import { IRefreshTokenRepository } from "src/core/repositories/irefreshtoken.repository";
 
 @Injectable()
 export class RefreshTokenRepository implements IRefreshTokenRepository {
@@ -38,7 +38,7 @@ export class RefreshTokenRepository implements IRefreshTokenRepository {
     }
 
     public async updateAsync(refreshToken: RefreshToken) : Promise<void> {
-        
+        await this.refreshTokenContext.update(refreshToken.id, refreshToken);
     }
 
     public async deleteAsync(refreshToken: RefreshToken) : Promise<RefreshToken> {

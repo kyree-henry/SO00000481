@@ -1,4 +1,8 @@
-import { TokenRequestModel } from "../login/login-handler";
+import { CommandHandler, ICommandHandler } from "cqrs";
+import { Inject, UnauthorizedException } from "@nestjs/common";
+import { TokenResponseModel } from "../tokenResponseModel";
+import { IUserRepository } from "src/core/repositories/iuser.repository";
+import { ITokenService } from "src/core/services/itoken.service"; 
 
 export class RefreshTokenRequestModel {
     userAgent: string;
@@ -22,3 +26,18 @@ export class RefreshTokenCommand {
 
 
 
+@CommandHandler(RefreshTokenCommand)
+export class RefreshTokenHandler implements ICommandHandler<RefreshTokenCommand> {
+    constructor(
+        @Inject('ITokenService') private readonly tokenService: ITokenService,
+        @Inject('IUserRepository') private readonly userRepository: IUserRepository,
+    ) {
+    }
+
+    public async execute(command: RefreshTokenCommand): Promise<TokenResponseModel> {
+
+         
+ 
+        throw new UnauthorizedException('Please authenticate');
+    }
+}

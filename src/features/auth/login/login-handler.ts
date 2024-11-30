@@ -4,10 +4,10 @@ import { ApiProperty } from "@nestjs/swagger";
 
 import { CommandHandler, ICommandHandler } from "cqrs";
 import { TokenResponseModel } from "../tokenResponseModel";
-import { password } from "src/core/utills/validation-password";
-import { ITokenService } from "../services/interfaces/itoken.service";
-import { IUserRepository } from "src/core/repositories/interfaces/iuser.repository";
-import { IRefreshTokenRepository } from "src/core/repositories/interfaces/irefreshtoken.repository";
+import { password } from "src/core/utils/validation";
+import { ITokenService } from "../../../core/services/itoken.service";
+import { IUserRepository } from "src/core/repositories/iuser.repository";
+import { IRefreshTokenRepository } from "src/core/repositories/irefreshtoken.repository";
 
 
 export class TokenRequestModel {

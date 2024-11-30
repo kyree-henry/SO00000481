@@ -1,6 +1,6 @@
 import { User } from "src/domain/entities/user";
 import { UserRole } from "src/domain/entities/userRole";
-import { IUserRepository } from "../interfaces/iuser.repository";
+import { IUserRepository } from "../../repositories/iuser.repository";
 
 export class CachedUserService implements IUserRepository {
 

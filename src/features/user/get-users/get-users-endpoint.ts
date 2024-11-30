@@ -2,7 +2,7 @@ import { Controller, Get, Query } from "@nestjs/common";
 import { ApiBearerAuth, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { UserModel } from "../userModel";
 import { GetUsersQuery } from "./get-users-handler";
-import { QueryBus } from "cqrs";
+import { CommandBus } from "cqrs";
 import { PagedResult } from "src/domain/pagination/pagedResult";
 
 
@@ -14,7 +14,7 @@ import { PagedResult } from "src/domain/pagination/pagedResult";
 })
 export class GetUsersController {
 
-    constructor(private readonly queryBus: QueryBus) {
+    constructor(private readonly queryBus: CommandBus) {
     }
 
     @Get('get')
@@ -42,7 +42,6 @@ export class GetUsersController {
             orderBy: orderBy
         }));
         
-        //@ts-ignore
-        return result;
+         return result;
     }
 }

@@ -1,12 +1,12 @@
-import Joi from "joi";
-import path from "path";
-import dotenv from 'dotenv';
+import * as Joi from "joi";
+import * as path from "path";
+import * as dotenv from 'dotenv'
 import { ApplicationException } from "./core/errors/appError";
-  
+
 const nodeEnv = process.env.NODE_ENV || 'development';
 
 // Load the appropriate .env file based on the environment
-dotenv.config({ path: path.join(process.cwd(), `.env.${nodeEnv}`) });
+dotenv.config({ path: path.join(process.cwd(), `.env.${nodeEnv}`) })
 dotenv.config({ override: true })
 
 const envVarsSchema = Joi.object()
@@ -19,6 +19,14 @@ const envVarsSchema = Joi.object()
             .default('this is my custom Secret key for authentication')
             .required()
             .description('JWT secret key'),
+        JWT_AUDIENCE: Joi.string()
+            .default('https://localhost:80')
+            .required()
+            .description('JWT Audience'),
+        JWT_ISSUER: Joi.string()
+            .default('https://localhost:80')
+            .required()
+            .description('JWT Issuer'),
         JWT_ACCESS_EXPIRATION_MINUTES: Joi.number()
             .default(10)
             .description('minutes after which access tokens expire'),
@@ -62,14 +70,14 @@ const { value: envVars, error } = envVarsSchema
     .validate(process.env);
 
 if (error) {
-    throw new ApplicationException(`Config validation error: ${error.message}` );
+    throw new ApplicationException(`Config validation error: ${error.message}`);
 }
 
 export default {
     env: envVars.NODE_ENV,
     projectName: envVars.PROJECT_NAME,
-    port: envVars.PORT, 
-    postgres:  {
+    port: envVars.PORT,
+    postgres: {
         host: envVars.POSTGRES_HOST,
         port: envVars.POSTGRES_PORT,
         username: envVars.POSTGRES_USERNAME,
@@ -84,17 +92,9 @@ export default {
     },
     jwt: {
         secret: envVars.JWT_SECRET,
+        audience: envVars.JWT_AUDIENCE,
+        issuer: envVars.JWT_ISSUER,
         accessTokenExpiration: envVars.JWT_ACCESS_EXPIRATION_MINUTES,
         refreshTokenExpiration: envVars.JWT_REFRESH_EXPIRATION_HOURS,
-    },
-    retry: {
-        count: envVars.RETRY_COUNT,
-        factor: envVars.RETRY_FACTOR,
-        minTimeout: envVars.RETRY_MIN_TIMEOUT,
-        maxTimeout: envVars.RETRY_MAX_TIMEOUT,
-    },
-    monitoring: {
-        jaegerEndpoint: envVars.MONITORING_JAEGER_ENDPOINT,
-        zipkinEndpoint: envVars.MONITORING_ZIPKIN_ENDPOINT,
-    },
+    }
 }; 

@@ -1,8 +1,8 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { RoleAlreadyExistsException } from "src/core/errors/roleError";
-import { IRoleRepository } from "src/core/repositories/interfaces/irole.repository";
-import { IUserRepository } from "src/core/repositories/interfaces/iuser.repository";
+import { IRoleRepository } from "src/core/repositories/irole.repository";
+import { IUserRepository } from "src/core/repositories/iuser.repository";
 import { Role } from "src/domain/entities/role";
 import { User } from "src/domain/entities/user";
 import { In, Repository } from "typeorm";

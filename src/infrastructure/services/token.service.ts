@@ -1,8 +1,9 @@
 import { JwtService } from '@nestjs/jwt';
 import { User } from "src/domain/entities/user";
 import { Inject, Injectable } from "@nestjs/common";
-import { ITokenService } from "./interfaces/itoken.service";
-import { IRoleRepository } from "src/core/repositories/interfaces/irole.repository";
+import { ITokenService } from "../../core/services/itoken.service";
+import { IRoleRepository } from "src/core/repositories/irole.repository";
+import configs from 'src/configs';
 
 @Injectable()
 export class TokenService implements ITokenService {
@@ -14,10 +15,17 @@ export class TokenService implements ITokenService {
 
     public async generateJwtAsync(user: User): Promise<string> {
         const claims = await this.getClaimsAsync(user);
+        return this.generateEncryptedToken(claims);
+    }
 
-        const signingCredentials = this.getSigningCredentials();
-
-        return this.generateEncryptedToken(signingCredentials, claims);
+    private generateEncryptedToken(claims: any[]): string {
+        const token = this.jwtService.sign(claims, {
+            secret: configs.jwt.secret,
+            expiresIn: `${configs.jwt.accessTokenExpiration}m`,
+            issuer: configs.jwt.issuer,
+            audience: configs.jwt.audience,
+        });
+        return token;
     }
 
     private async getClaimsAsync(user: User): Promise<any[]> {
@@ -36,7 +44,7 @@ export class TokenService implements ITokenService {
         );
 
         const claims = [
-            { name: 'sub', value: user.id.toString() },
+            { name: 'sub', value: user.id },
             { name: 'email', value: user.email },
             { name: 'firstName', value: user.firstName },
             { name: 'lastName', value: user.lastName },
@@ -47,20 +55,6 @@ export class TokenService implements ITokenService {
         ];
 
         return claims;
-    }
-
-    private getSigningCredentials(): any {
-        return { secret: 'yourSecretKey' };
-    }
-
-    private generateEncryptedToken(signingCredentials: any, claims: any[]): string {
-        const token = this.jwtService.sign(claims, {
-            secret: 'yourSecretKey',
-            expiresIn: '1h',
-            issuer: 'yourIssuer',
-            audience: 'yourAudience',
-        });
-        return token;
     }
 
 }

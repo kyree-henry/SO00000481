@@ -1,15 +1,15 @@
-import Joi from "joi";
-import { Inject } from "@nestjs/common";
-import { UserModel } from "../userModel";
-import { UserType } from "src/domain/enums";
 import { ApiProperty } from "@nestjs/swagger";
-import { User } from "src/domain/entities/user";
-import { password } from "src/core/utils/validation";
 import { CommandHandler, ICommandHandler } from "cqrs";
-import { UserAlreadyExistsException } from "src/core/errors/userErrors";
+import Joi from "joi";
+import { password } from "src/core/utils/validation";
+import { Inject } from "@nestjs/common";
+import { UserModel } from "src/features/user/userModel";
 import { IUserRepository } from "src/core/repositories/iuser.repository";
+import { UserAlreadyExistsException } from "src/core/errors/userErrors";
+import { User } from "src/domain/entities/user";
+import { UserType } from "src/domain/enums";
 
-export class CreateUserModel {
+export class RegisterModel {
     @ApiProperty()
     email: string;
 
@@ -23,20 +23,20 @@ export class CreateUserModel {
     lastName: string;
 
     @ApiProperty()
-    role: string;
+    gender: string;
 
     @ApiProperty()
-    type: UserType;
+    phoneNumber: string;
 
-    constructor(request: Partial<CreateUserModel> = {}) {
+    constructor(request: Partial<RegisterModel> = {}) {
         Object.assign(this, request);
     }
 }
 
-export class CreateUserCommand {
-    model: CreateUserModel
+export class RegisterCommand {
+    model: RegisterModel
 
-    constructor(request: Partial<CreateUserCommand> = {}) {
+    constructor(request: Partial<RegisterCommand> = {}) {
         Object.assign(this, request);
     }
 }
@@ -46,17 +46,17 @@ const createUserValidations = Joi.object({
     password: Joi.string().required().custom(password),
     firstName: Joi.string().required(),
     lastName: Joi.string().required(),
-    type: Joi.string().valid(...Object.values(UserType)).required(),
-    role: Joi.string().required()
+    phoneNumber: Joi.string().required(),
+    gender: Joi.string().required()
 });
 
-@CommandHandler(CreateUserCommand)
-export class CreateUserHandler implements ICommandHandler<CreateUserCommand, UserModel> {
+@CommandHandler(RegisterCommand)
+export class RegisterHandler implements ICommandHandler<RegisterCommand> {
     constructor(
         @Inject('IUserRepository') private readonly userRepository: IUserRepository,
     ) { }
 
-    public async execute(command: CreateUserCommand): Promise<UserModel> {
+    public async execute(command: RegisterCommand): Promise<UserModel> {
 
         await createUserValidations.validateAsync(command.model);
 
@@ -71,10 +71,9 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand, Use
                 firstName: command.model.firstName,
                 lastName: command.model.lastName,
                 email: command.model.email,
+                type: UserType.Guest,
             }), command.model.password);
-
-        await this.userRepository.addToRoleAsync(user, command.model.role)
-
+ 
         const result = new UserModel({
             id: user.id,
             firstName: user.firstName,

@@ -18,3 +18,5 @@ export class ApplicationException extends Error {
         Error.captureStackTrace(this, this.constructor);
     }
 }
+
+export default ApplicationException; 

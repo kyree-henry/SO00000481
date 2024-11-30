@@ -1,29 +1,29 @@
 import { Body, Controller, HttpStatus, Post, Res, UseGuards } from "@nestjs/common";
-import { UserModel } from "../userModel";
-import { ApiResponse, ApiTags } from "@nestjs/swagger";
+import { UserModel } from "../../user/userModel";
+import { ApiProperty, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { CommandBus } from "cqrs";
-import { CreateUserCommand, CreateUserModel } from "./create-user-handler";
-import { Response } from "express";
+ import { Response} from "express";
+import { RegisterCommand, RegisterModel } from "./register-handler";
 
-@ApiTags('Users')
-@UseGuards()
+
+
 @Controller({
-    path: `/user`,
+    path: `/identity`,
     version: '1',
 })
-export class CreateUserController {
+export class RegisterController {
 
     constructor(private readonly commandBus: CommandBus) { }
 
-    @Post()
+    @Post('register')
+    @ApiResponse({ status: 200, description: 'OK' })
     @ApiResponse({ status: 401, description: 'UNAUTHORIZED' })
     @ApiResponse({ status: 400, description: 'BAD_REQUEST' })
     @ApiResponse({ status: 403, description: 'FORBIDDEN' })
-    @ApiResponse({ status: 201, description: 'CREATED' })
-    public async createUser(@Body() request: CreateUserModel, @Res() res: Response
+    public async register(@Body() request: RegisterModel, @Res() res: Response
     ): Promise<UserModel> {
 
-        const result = await this.commandBus.execute(new CreateUserCommand({
+        const result = await this.commandBus.execute(new RegisterCommand({
             model: request
         }));
 

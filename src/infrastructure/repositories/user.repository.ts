@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { User } from "src/domain/entities/user";
-import { IUserRepository } from "../../core/repositories/interfaces/iuser.repository";
+import { IUserRepository } from "../../core/repositories/iuser.repository";
 import { Inject, Injectable } from "@nestjs/common";
 
 import { InjectRepository } from "@nestjs/typeorm";
@@ -8,7 +8,7 @@ import { Repository, SelectQueryBuilder } from "typeorm";
 import { UserAlreadyExistsException, UserAlreadyInRoleException } from "src/core/errors/userErrors";
 import { UserRole } from 'src/domain/entities/userRole';
 import { RoleNotFoundException } from 'src/core/errors/roleError';
-import { IRoleRepository } from 'src/core/repositories/interfaces/irole.repository';
+import { IRoleRepository } from 'src/core/repositories/irole.repository';
 
 @Injectable()
 export class UserRepository implements IUserRepository {
