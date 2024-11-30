@@ -3,6 +3,8 @@ import { Request, Response } from "express";
 import { AppModule } from './app.module';
 import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import configs from './configs';
+import { ErrorHandlersFilter } from './core/errors/error-handler-filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -11,7 +13,7 @@ async function bootstrap() {
 
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
-  const port = process.env.PORT || 3000;
+  const port = configs.port || 3000;
 
 
   app.enableVersioning({
@@ -19,8 +21,8 @@ async function bootstrap() {
   });
 
   const config = new DocumentBuilder()
-    .setTitle('basic-store')
-    .setDescription(`basic-store api description`)
+    .setTitle(`${configs.projectName}`)
+    .setDescription(`${configs.projectName} api description`)
     .setVersion('1.0')
     .addBearerAuth()
     .build();
@@ -32,7 +34,7 @@ async function bootstrap() {
 
   app.use((req: Request, res: Response, next: any) => {
     if (req.originalUrl == '/' || req.originalUrl.includes('favicon.ico')) {
-      return res.send('basic-store'); 
+      return res.send(configs.projectName); 
     }
 
     return next();
