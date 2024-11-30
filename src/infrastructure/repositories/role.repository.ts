@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { RoleAlreadyExistsError } from "src/core/errors/roleError";
+import { RoleAlreadyExistsException } from "src/core/errors/roleError";
 import { IRoleRepository } from "src/core/repositories/interfaces/irole.repository";
 import { IUserRepository } from "src/core/repositories/interfaces/iuser.repository";
 import { Role } from "src/domain/entities/role";
@@ -17,7 +17,7 @@ export class RoleRepository implements IRoleRepository {
  
     public async createAsync(role: Role): Promise<Role> {
         if (await this.getRoleByNameAsync(role.name)) {
-            throw new RoleAlreadyExistsError(role.name);
+            throw new RoleAlreadyExistsException(role.name);
         }
 
         return await this.roleContext.save(role);

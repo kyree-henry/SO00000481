@@ -5,9 +5,9 @@ import { Inject, Injectable } from "@nestjs/common";
 
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository, SelectQueryBuilder } from "typeorm";
-import { UserAlreadyExistsError, UserAlreadyInRoleError } from "src/core/errors/userErrors";
+import { UserAlreadyExistsException, UserAlreadyInRoleException } from "src/core/errors/userErrors";
 import { UserRole } from 'src/domain/entities/userRole';
-import { RoleNotFoundError } from 'src/core/errors/roleError';
+import { RoleNotFoundException } from 'src/core/errors/roleError';
 import { IRoleRepository } from 'src/core/repositories/interfaces/irole.repository';
 
 @Injectable()
@@ -26,7 +26,7 @@ export class UserRepository implements IUserRepository {
     public async createAysnc(user: User, password: string): Promise<User> {
 
         if (await this.getUserByEmailAsync(user.email)) {
-            throw new UserAlreadyExistsError(user.email);
+            throw new UserAlreadyExistsException(user.email);
         }
 
         if (password) {
@@ -105,7 +105,7 @@ export class UserRepository implements IUserRepository {
     public async addToRoleAsync(user: User, roleName: string): Promise<UserRole | null> {
 
         if (await this.isInRoleAsync(user, roleName)) {
-            throw new UserAlreadyInRoleError(user.email, '', roleName);
+            throw new UserAlreadyInRoleException(user.email, '', roleName);
         }
 
         const role = await this.roleRepository.getRoleByNameAsync(roleName);
@@ -120,7 +120,7 @@ export class UserRepository implements IUserRepository {
     public async isInRoleAsync(user: User, roleName: string): Promise<UserRole | null> {
         
         const role = await this.roleRepository.getRoleByNameAsync(roleName) 
-        ?? (() => { throw new RoleNotFoundError('', roleName); })();
+        ?? (() => { throw new RoleNotFoundException('', roleName); })();
 
         return await this.userRoleContext.findOne({ where: { userId: user.id, roleId: role?.id } }); 
     }

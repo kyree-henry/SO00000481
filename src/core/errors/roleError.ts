@@ -1,14 +1,17 @@
-import { BadRequestError } from "./badRequestError";
-import { NotFoundError } from "./notFoundError";
+import {
+    BadRequestException,
+    ConflictException,
+      NotFoundException,
+} from '@nestjs/common';
 
-export class RoleAlreadyExistsError extends BadRequestError {
+export class RoleAlreadyExistsException extends ConflictException {
     constructor(roleName: string) {
         super(`A role with the name "${roleName}" already exists.`);
-        this.name = 'RoleAlreadyExistsError';
+        this.name = 'RoleAlreadyExistsException';
     }
 }
 
-export class RoleNotFoundError extends NotFoundError {
+export class RoleNotFoundException extends NotFoundException {
     constructor(name: string, id: string = '') {
         if (name) {
             super(`Role with name ${name} could not be found!`);
@@ -16,6 +19,6 @@ export class RoleNotFoundError extends NotFoundError {
             super(`Role with id ${id} could not be found!`);
         }
 
-        this.name = 'RoleNotFoundError';
+        this.name = 'RoleNotFoundException';
     }
 }
