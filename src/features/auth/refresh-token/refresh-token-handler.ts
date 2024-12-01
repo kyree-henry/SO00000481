@@ -33,8 +33,8 @@ const refreshTokenValidations = Joi.object({
     userAgent: Joi.string().required().message('Prevented: Adulterated Request Received!'),
     ipAddress: Joi.string().required().message('Prevented: Adulterated Request Received!'),
     deviceId: Joi.string().required().message('Prevented: Adulterated Request Received!'),
-    access_token: Joi.string().email().required().message('Prevented: Adulterated Request Received!'),
-    refresh_token: Joi.string().email().required().message('Prevented: Adulterated Request Received!'),
+    access_token: Joi.string().required().message('Prevented: Adulterated Request Received!'),
+    refresh_token: Joi.string().required().message('Prevented: Adulterated Request Received!'),
 });
 
 @CommandHandler(RefreshTokenCommand)
