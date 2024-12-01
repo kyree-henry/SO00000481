@@ -1,11 +1,11 @@
 import * as crypto from 'crypto';
-import configs from 'src/configs';
+import configs from '../../configs';
 import { Repository } from "typeorm";
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from "@nestjs/typeorm";
-import { addDurationToNow } from 'src/core/utils/time';
-import { RefreshToken } from "src/domain/entities/refreshToken";
-import { IRefreshTokenRepository } from "src/core/repositories/irefreshtoken.repository";
+import { addDurationToNow } from '../../core/utils/time';
+import { RefreshToken } from "../../domain/entities/refreshToken";
+import { IRefreshTokenRepository } from "../../core/repositories/irefreshtoken.repository";
 
 @Injectable()
 export class RefreshTokenRepository implements IRefreshTokenRepository {

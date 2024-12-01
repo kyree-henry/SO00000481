@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { IUserRepository } from 'src/core/repositories/iuser.repository';
-import { User } from 'src/domain/entities/user';
+import { IUserRepository } from '../../core/repositories/iuser.repository';
+import { User } from '../../domain/entities/user';
 
 @Injectable()
 export class DataSeeder {

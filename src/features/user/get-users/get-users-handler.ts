@@ -1,9 +1,9 @@
+import * as Joi from "joi";
 import { Inject } from "@nestjs/common";
-import { CommandHandler, ICommandHandler } from "cqrs";
-import Joi from "joi";
-import { PagedResult } from "src/domain/pagination/pagedResult";
 import { UserModel } from "../userModel";
-import { IUserRepository } from "src/core/repositories/iuser.repository";
+import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
+import { PagedResult } from "../../../domain/pagination/pagedResult";
+import { IUserRepository } from "../../../core/repositories/iuser.repository";
 
 export class GetUsersQuery {
     page = 1;

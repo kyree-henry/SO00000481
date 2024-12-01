@@ -1,9 +1,9 @@
-import { Body, Controller, HttpStatus, Post, Res, UseGuards } from "@nestjs/common";
-import { UserModel } from "../userModel";
-import { ApiResponse, ApiTags } from "@nestjs/swagger";
-import { CommandBus } from "cqrs";
-import { CreateUserCommand, CreateUserModel } from "./create-user-handler";
 import { Response } from "express";
+import { UserModel } from "../userModel";
+import { CommandBus } from "@nestjs/cqrs";
+import { ApiResponse, ApiTags } from "@nestjs/swagger";
+import { CreateUserCommand, CreateUserModel } from "./create-user-handler";
+import { Body, Controller, HttpStatus, Post, Res, UseGuards } from "@nestjs/common";
 
 @ApiTags('Users')
 @UseGuards()

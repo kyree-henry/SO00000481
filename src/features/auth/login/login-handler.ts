@@ -1,14 +1,13 @@
-import Joi from "joi";
+import * as Joi from "joi";
 import { Inject } from "@nestjs/common";
 import { ApiProperty } from "@nestjs/swagger";
-
-import { CommandHandler, ICommandHandler } from "cqrs";
+import { User } from "../../../domain/entities/user";
+import { password } from "../../../core/utils/validation";
 import { TokenResponseModel } from "../tokenResponseModel";
-import { password } from "src/core/utils/validation";
+import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { ITokenService } from "../../../core/services/itoken.service";
-import { IUserRepository } from "src/core/repositories/iuser.repository";
-import { IRefreshTokenRepository } from "src/core/repositories/irefreshtoken.repository";
-import { User } from "src/domain/entities/user";
+import { IUserRepository } from "../../../core/repositories/iuser.repository";
+import { IRefreshTokenRepository } from "../../../core/repositories/irefreshtoken.repository";
 
 
 export class TokenRequestModel {
@@ -35,9 +34,9 @@ export class TokenRequestModel {
 const loginValidations = Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().required().custom(password),
-    userAgent: Joi.string().required().message('Prevented: Adulterated Request Received!'),
-    ipAddress: Joi.string().required().message('Prevented: Adulterated Request Received!'),
-    deviceId: Joi.string().required().message('Prevented: Adulterated Request Received!'),
+    userAgent: Joi.string().required().messages({'any.required': ' Prevented: Adulterated Request Received!'}),
+    ipAddress: Joi.string().required().messages({'any.required': ' Prevented: Adulterated Request Received!'}),
+    deviceId: Joi.string().required().messages({'any.required': ' Prevented: Adulterated Request Received!'}),
 });
 
 export class LoginCommand {

@@ -1,26 +1,33 @@
-import { CqrsModule } from "cqrs";
-import {Module} from '@nestjs/common'; 
+import { Module } from '@nestjs/common';
+import { CqrsModule } from "@nestjs/cqrs";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { Role } from "src/domain/entities/role";
-import { User } from "src/domain/entities/user";
-import { CreateUserController } from "src/features/user/create-user/create-user-endpoint";
-import { CreateUserHandler } from "src/features/user/create-user/create-user-handler";
-import { GetUserController } from "src/features/user/get-user/get-user-endpoint";
-import { GetUserHandler } from "src/features/user/get-user/get-user-handler";
-import { GetUsersController } from "src/features/user/get-users/get-users-endpoint";
-import { GetUsersHandler } from "src/features/user/get-users/get-users-handler";
-import { UserRepository } from "src/infrastructure/repositories/user.repository";
+import { Role } from "../domain/entities/role";
+import { User } from "../domain/entities/user";
+import { UserRole } from "../domain/entities/userRole";
+import { RoleClaim } from "../domain/entities/roleClaim";
+import { GetUserHandler } from "../features/user/get-user/get-user-handler";
+import { RoleRepository } from '../infrastructure/repositories/role.repository';
+import { GetUsersHandler } from "../features/user/get-users/get-users-handler";
+import { UserRepository } from "../infrastructure/repositories/user.repository";
+import { GetUserController } from "../features/user/get-user/get-user-endpoint";
+import { GetUsersController } from "../features/user/get-users/get-users-endpoint";
+import { CreateUserHandler } from "../features/user/create-user/create-user-handler";
+import { CreateUserController } from "../features/user/create-user/create-user-endpoint";
 
 @Module({
-    imports: [CqrsModule, TypeOrmModule.forFeature([User, Role])],
-    controllers: [CreateUserController, GetUsersController, GetUserController],
-    providers: [CreateUserHandler, GetUsersHandler, GetUserHandler,
-      {
-        provide: 'IUserRepository',
-        useClass: UserRepository,
-      } 
-      ],
-    exports: [],
-  })
-  
-  export class UserModule {}
+  imports: [CqrsModule, TypeOrmModule.forFeature([User, Role, RoleClaim, UserRole])],
+  controllers: [CreateUserController, GetUsersController, GetUserController],
+  providers: [CreateUserHandler, GetUsersHandler, GetUserHandler,
+    {
+      provide: 'IUserRepository',
+      useClass: UserRepository,
+    },
+    {
+      provide: 'IRoleRepository',
+      useClass: RoleRepository,
+    }
+  ],
+  exports: [],
+})
+
+export class UserModule { }

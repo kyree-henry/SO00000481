@@ -1,4 +1,4 @@
-import configs from 'src/configs';
+import configs from '../../configs';
 import { DataSource, DataSourceOptions } from 'typeorm';
  
  export const postgresOptions: DataSourceOptions = {

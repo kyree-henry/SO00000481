@@ -1,14 +1,13 @@
 import bcrypt from 'bcrypt';
-import { User } from "src/domain/entities/user";
-import { IUserRepository } from "../../core/repositories/iuser.repository";
-import { Inject, Injectable } from "@nestjs/common";
-
+import { User } from "../../domain/entities/user";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository, SelectQueryBuilder } from "typeorm";
-import { UserAlreadyExistsException, UserAlreadyInRoleException } from "src/core/errors/userErrors";
-import { UserRole } from 'src/domain/entities/userRole';
-import { RoleNotFoundException } from 'src/core/errors/roleError';
-import { IRoleRepository } from 'src/core/repositories/irole.repository';
+import { UserRole } from '../../domain/entities/userRole';
+import { forwardRef, Inject, Injectable } from "@nestjs/common"; 
+import { RoleNotFoundException } from '../../core/errors/roleError';
+import { IRoleRepository } from '../../core/repositories/irole.repository';
+import { IUserRepository } from "../../core/repositories/iuser.repository";
+import { UserAlreadyExistsException, UserAlreadyInRoleException } from "../../core/errors/userErrors";
 
 @Injectable()
 export class UserRepository implements IUserRepository {
@@ -16,7 +15,7 @@ export class UserRepository implements IUserRepository {
     constructor(
         @InjectRepository(User) private readonly userContext: Repository<User>,
         @InjectRepository(UserRole) private readonly userRoleContext: Repository<UserRole>,
-        @Inject('IRoleRepository') private readonly roleRepository: IRoleRepository
+        @Inject(forwardRef(() => 'IRoleRepository')) private readonly roleRepository: IRoleRepository
     ) { }
 
     public async getAsync(): Promise<User[]> {

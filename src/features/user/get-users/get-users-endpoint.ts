@@ -1,9 +1,9 @@
-import { Controller, Get, Query } from "@nestjs/common";
-import { ApiBearerAuth, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { UserModel } from "../userModel";
+import { CommandBus } from "@nestjs/cqrs";
 import { GetUsersQuery } from "./get-users-handler";
-import { CommandBus } from "cqrs";
-import { PagedResult } from "src/domain/pagination/pagedResult";
+import { Controller, Get, Query } from "@nestjs/common";
+import { PagedResult } from "domain/pagination/pagedResult";
+import { ApiBearerAuth, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
 
 
 @ApiBearerAuth()

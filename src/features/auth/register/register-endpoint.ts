@@ -1,9 +1,9 @@
-import { Body, Controller, HttpStatus, Post, Res, UseGuards } from "@nestjs/common";
+import { Response} from "express";
+import { CommandBus } from "@nestjs/cqrs";
+import { ApiResponse } from "@nestjs/swagger";
 import { UserModel } from "../../user/userModel";
-import { ApiProperty, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { CommandBus } from "cqrs";
- import { Response} from "express";
 import { RegisterCommand, RegisterModel } from "./register-handler";
+import { Body, Controller, HttpStatus, Post, Res } from "@nestjs/common";
 
 
 

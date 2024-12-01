@@ -1,4 +1,4 @@
-import { RefreshToken } from "src/domain/entities/refreshToken";
+import { RefreshToken } from "../../domain/entities/refreshToken";
 
 export interface IRefreshTokenRepository {
 

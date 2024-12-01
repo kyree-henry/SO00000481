@@ -1,32 +1,44 @@
 import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtModule, JwtService } from '@nestjs/jwt';
+import { CqrsModule } from '@nestjs/cqrs';
+import { Role } from '../domain/entities/role';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CqrsModule } from 'cqrs';
-import { RefreshToken } from 'src/domain/entities/refreshToken';
-import { Role } from 'src/domain/entities/role';
-import { User } from 'src/domain/entities/user';
-import { LoginController } from 'src/features/auth/login/login-endpoint';
-import { LoginHandler } from 'src/features/auth/login/login-handler';
-import { RefreshTokenController } from 'src/features/auth/refresh-token/refresh-token-endpoint';
-import { RefreshTokenHandler } from 'src/features/auth/refresh-token/refresh-token-handler';
-import { RegisterController } from 'src/features/auth/register/register-endpoint';
-import { RegisterHandler } from 'src/features/auth/register/register-handler';
-import { UserRepository } from 'src/infrastructure/repositories/user.repository';
-import { TokenService } from 'src/infrastructure/services/token.service';
+import { User } from '../domain/entities/user';
+import { UserRole } from '../domain/entities/userRole';
+import { RoleClaim } from '../domain/entities/roleClaim';
+import { RefreshToken } from '../domain/entities/refreshToken';
+import { LoginHandler } from '../features/auth/login/login-handler';
+import { TokenService } from '../infrastructure/services/token.service';
+import { LoginController } from '../features/auth/login/login-endpoint';
+import { RegisterHandler } from '../features/auth/register/register-handler';
+import { RoleRepository } from '../infrastructure/repositories/role.repository';
+import { UserRepository } from '../infrastructure/repositories/user.repository';
+import { RegisterController } from '../features/auth/register/register-endpoint';
+import { RefreshTokenHandler } from '../features/auth/refresh-token/refresh-token-handler';
+import { RefreshTokenController } from '../features/auth/refresh-token/refresh-token-endpoint';
+import { RefreshTokenRepository } from '../infrastructure/repositories/refreshToken.repository';
 
 @Module({
-    imports: [CqrsModule, TypeOrmModule.forFeature([RefreshToken, User, Role])],
-    providers: [RegisterHandler, LoginHandler, RefreshTokenHandler,
+    imports: [CqrsModule, TypeOrmModule.forFeature([RefreshToken, User, Role, RoleClaim, UserRole])],
+    providers: [RegisterHandler, LoginHandler, RefreshTokenHandler, JwtService,
         {
             provide: 'ITokenService',
             useClass: TokenService,
         },
         {
+            provide: 'IRoleRepository',
+            useClass: RoleRepository,
+        },
+        {
             provide: 'IUserRepository',
             useClass: UserRepository,
+        },
+        {
+            provide: 'IRefreshTokenRepository',
+            useClass: RefreshTokenRepository,
         }
     ],
     controllers: [RegisterController, LoginController, RefreshTokenController],
-    exports: [JwtModule],
+    exports: [ ],
 })
 export class AuthModule { }

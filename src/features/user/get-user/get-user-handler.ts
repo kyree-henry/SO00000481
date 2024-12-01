@@ -1,9 +1,9 @@
-import { CommandHandler, ICommandHandler } from "cqrs";
-import { UserModel } from "../userModel";
-import Joi from "joi";
-import { IUserRepository } from "src/core/repositories/iuser.repository";
+import * as Joi from "joi";
 import { Inject } from "@nestjs/common";
-import { UserNotFoundException } from "src/core/errors/userErrors";
+import { UserModel } from "../userModel";
+import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
+import { UserNotFoundException } from "../../../core/errors/userErrors";
+import { IUserRepository } from "../../../core/repositories/iuser.repository";
 
 
 export class GetUserQuery {

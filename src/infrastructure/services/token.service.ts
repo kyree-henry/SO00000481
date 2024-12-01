@@ -1,10 +1,10 @@
+import configs from '../../configs';
 import { JwtService } from '@nestjs/jwt';
-import { User } from "src/domain/entities/user";
+import { User } from "../../domain/entities/user";
 import { Inject, Injectable } from "@nestjs/common";
+import { JwtPayload } from '../../core/utils/jwtPayload';
 import { ITokenService } from "../../core/services/itoken.service";
-import { IRoleRepository } from "src/core/repositories/irole.repository";
-import configs from 'src/configs';
-import { JwtPayload } from 'src/core/utils/jwtPayload';
+import { IRoleRepository } from "../../core/repositories/irole.repository";
 
 @Injectable()
 export class TokenService implements ITokenService {

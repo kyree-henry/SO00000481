@@ -1,4 +1,4 @@
-import { CommandBus } from "cqrs";
+import { CommandBus } from "@nestjs/cqrs";
 import { Body, Controller, Post } from "@nestjs/common";
 import { TokenResponseModel } from "../tokenResponseModel";
 import { ApiBearerAuth, ApiResponse, ApiTags } from "@nestjs/swagger";

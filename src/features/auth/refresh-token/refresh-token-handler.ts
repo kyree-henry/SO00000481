@@ -1,13 +1,13 @@
-import Joi from "joi";
-import configs from "src/configs";
+import * as Joi from "joi";
+import configs from "../../../configs";
 import { Inject } from "@nestjs/common";
-import { hasIpChanged } from "src/core/utils/ip";
-import { addDurationToNow } from "src/core/utils/time";
-import { CommandHandler, ICommandHandler } from "cqrs";
+import { hasIpChanged } from "../../../core/utils/ip";
 import { TokenResponseModel } from "../tokenResponseModel";
-import { ITokenService } from "src/core/services/itoken.service";
-import { IUserRepository } from "src/core/repositories/iuser.repository";
-import { IRefreshTokenRepository } from "src/core/repositories/irefreshtoken.repository";
+import { addDurationToNow } from "../../../core/utils/time";
+import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
+import { ITokenService } from "../../../core/services/itoken.service";
+import { IUserRepository } from "../../../core/repositories/iuser.repository";
+import { IRefreshTokenRepository } from "../../../core/repositories/irefreshtoken.repository";
 
 export class RefreshTokenRequestModel {
     userAgent: string;
@@ -30,11 +30,11 @@ export class RefreshTokenCommand {
 }
 
 const refreshTokenValidations = Joi.object({
-    userAgent: Joi.string().required().message('Prevented: Adulterated Request Received!'),
-    ipAddress: Joi.string().required().message('Prevented: Adulterated Request Received!'),
-    deviceId: Joi.string().required().message('Prevented: Adulterated Request Received!'),
-    access_token: Joi.string().required().message('Prevented: Adulterated Request Received!'),
-    refresh_token: Joi.string().required().message('Prevented: Adulterated Request Received!'),
+    userAgent: Joi.string().required().messages({'any.required': ' Prevented: Adulterated Request Received!'}),
+    ipAddress: Joi.string().required().messages({'any.required': ' Prevented: Adulterated Request Received!'}),
+    deviceId: Joi.string().required().messages({'any.required': ' Prevented: Adulterated Request Received!'}),
+    access_token: Joi.string().required().messages({'any.required': ' Prevented: Adulterated Request Received!'}),
+    refresh_token: Joi.string().required().messages({'any.required': ' Prevented: Adulterated Request Received!'}),
 });
 
 @CommandHandler(RefreshTokenCommand)

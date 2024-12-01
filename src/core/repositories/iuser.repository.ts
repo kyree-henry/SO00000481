@@ -1,5 +1,5 @@
-import { User } from "src/domain/entities/user";
-import { UserRole } from "src/domain/entities/userRole";
+import { User } from "../../domain/entities/user";
+import { UserRole } from "../../domain/entities/userRole";
 
 export interface IUserRepository {
 

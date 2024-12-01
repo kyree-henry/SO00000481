@@ -1,8 +1,8 @@
-import { ApiBearerAuth, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { CommandBus } from "@nestjs/cqrs";
 import { Body, Controller, Post } from "@nestjs/common";
-import { CommandBus } from "cqrs";
-import { LoginCommand, TokenRequestModel } from "./login-handler";
 import { TokenResponseModel } from "../tokenResponseModel";
+import { LoginCommand, TokenRequestModel } from "./login-handler";
+import { ApiBearerAuth, ApiResponse, ApiTags } from "@nestjs/swagger";
  
 @ApiBearerAuth()
 @ApiTags('Identities')

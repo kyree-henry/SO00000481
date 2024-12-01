@@ -1,8 +1,8 @@
+import { UserModel } from "../userModel";
+import { CommandBus } from "@nestjs/cqrs";
+import { GetUserQuery } from "./get-user-handler";
 import { Controller, Get, Query, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { CommandBus } from "cqrs";
-import { GetUserQuery } from "./get-user-handler";
-import { UserModel } from "../userModel";
 
 @ApiBearerAuth()
 @ApiTags('Users')

@@ -1,13 +1,13 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { CommandHandler, ICommandHandler } from "cqrs";
-import Joi from "joi";
-import { password } from "src/core/utils/validation";
+import * as Joi from "joi";
 import { Inject } from "@nestjs/common";
-import { UserModel } from "src/features/user/userModel";
-import { IUserRepository } from "src/core/repositories/iuser.repository";
-import { UserAlreadyExistsException } from "src/core/errors/userErrors";
-import { User } from "src/domain/entities/user";
-import { UserType } from "src/domain/enums";
+import { ApiProperty } from "@nestjs/swagger";
+import { UserType } from "../../../domain/enums";
+import { UserModel } from "../../user/userModel";
+import { User } from "../../../domain/entities/user";
+import { password } from "../../../core/utils/validation";
+import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
+import { UserAlreadyExistsException } from "../../../core/errors/userErrors";
+import { IUserRepository } from "../../../core/repositories/iuser.repository";
 
 export class RegisterModel {
     @ApiProperty()

@@ -1,5 +1,5 @@
-import { Role } from "src/domain/entities/role";
-import { User } from "src/domain/entities/user";
+import { Role } from "../../domain/entities/role";
+import { User } from "../../domain/entities/user";
 
 export interface IRoleRepository {
 
