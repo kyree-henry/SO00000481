@@ -1,7 +1,9 @@
 import * as crypto from 'crypto';
+import configs from 'src/configs';
 import { Repository } from "typeorm";
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from "@nestjs/typeorm";
+import { addDurationToNow } from 'src/core/utils/time';
 import { RefreshToken } from "src/domain/entities/refreshToken";
 import { IRefreshTokenRepository } from "src/core/repositories/irefreshtoken.repository";
 
@@ -27,8 +29,10 @@ export class RefreshTokenRepository implements IRefreshTokenRepository {
             deviceId,
             userAgent,
             ipAddress,
-            tokenValue: this.GenerateToken()
+            tokenValue: this.GenerateToken(),
+            expiryDateUtc: addDurationToNow(configs.jwt.refreshTokenExpiration),
         });
+        
 
         return await this.refreshTokenContext.save(refreshToken);
     }
@@ -45,13 +49,9 @@ export class RefreshTokenRepository implements IRefreshTokenRepository {
         return await this.refreshTokenContext.remove(refreshToken);
     }
 
-    public GenerateToken(): string {
-
-        const randomBytes = crypto.randomBytes(32);
-
-        const tokenValue = randomBytes.toString('base64');
-
-        return tokenValue;
+    public GenerateToken(): string { 
+        const randomBytes = crypto.randomBytes(32); 
+        return randomBytes.toString('base64'); 
     }
 
 }

@@ -14,7 +14,7 @@ import { postgresOptions } from 'src/infrastructure/persistence/data.source';
     PassportModule,
     JwtModule.register({
       secret: configs.jwt.secret,
-      signOptions: { expiresIn: `${configs.jwt.accessTokenExpiration}m` },
+      signOptions: { expiresIn:  configs.jwt.accessTokenExpiration },
     }),
     TypeOrmModule.forRoot(postgresOptions), 
     UserModule,

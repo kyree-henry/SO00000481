@@ -27,11 +27,11 @@ const envVarsSchema = Joi.object()
             .default('https://localhost:80')
             .required()
             .description('JWT Issuer'),
-        JWT_ACCESS_EXPIRATION_MINUTES: Joi.number()
-            .default(10)
+        JWT_ACCESS_EXPIRATION_MINUTES: Joi.string()
+            .default('1m')
             .description('minutes after which access tokens expire'),
-        JWT_REFRESH_EXPIRATION_HOURS: Joi.number()
-            .default(12)
+        JWT_REFRESH_EXPIRATION_HOURS: Joi.string()
+            .default('1h')
             .description('hours after which refresh tokens expire'),
         POSTGRES_HOST: Joi.string()
             .default('localhost')

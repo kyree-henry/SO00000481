@@ -1,6 +1,6 @@
-import { TypeOrmModule } from "@nestjs/typeorm";
 import { CqrsModule } from "cqrs";
 import {Module} from '@nestjs/common'; 
+import { TypeOrmModule } from "@nestjs/typeorm";
 import { Role } from "src/domain/entities/role";
 import { User } from "src/domain/entities/user";
 import { CreateUserController } from "src/features/user/create-user/create-user-endpoint";
