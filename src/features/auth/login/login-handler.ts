@@ -8,6 +8,7 @@ import { password } from "src/core/utils/validation";
 import { ITokenService } from "../../../core/services/itoken.service";
 import { IUserRepository } from "src/core/repositories/iuser.repository";
 import { IRefreshTokenRepository } from "src/core/repositories/irefreshtoken.repository";
+import { User } from "src/domain/entities/user";
 
 
 export class TokenRequestModel {
@@ -40,7 +41,7 @@ const loginValidations = Joi.object({
 });
 
 export class LoginCommand {
-    model: TokenRequestModel;  
+    model: TokenRequestModel;
 
     constructor(request: Partial<LoginCommand> = {}) {
         Object.assign(this, request);
@@ -51,45 +52,78 @@ export class LoginCommand {
 export class LoginHandler implements ICommandHandler<LoginCommand> {
 
     constructor(
-         @Inject('ITokenService') private readonly tokenService: ITokenService,
-         @Inject('IUserRepository') private readonly userRepository: IUserRepository ,
-         @Inject('IRefreshTokenRepository') private readonly refreshTokenService: IRefreshTokenRepository 
-     ) {}
+        @Inject('ITokenService') private readonly tokenService: ITokenService,
+        @Inject('IUserRepository') private readonly userRepository: IUserRepository,
+        @Inject('IRefreshTokenRepository') private readonly refreshTokenService: IRefreshTokenRepository
+    ) { }
 
-    async execute(command: LoginCommand): Promise<TokenResponseModel> {
+    public async execute(command: LoginCommand): Promise<TokenResponseModel> {
 
         await loginValidations.validateAsync(command);
 
-        const invalidLoginMessage = "Invalid login attempt.";
-
         const user = await this.userRepository.getUserByEmailAsync(command.model.email);
         if (!user || !(await this.userRepository.checkPasswordAsync(user, command.model.password))) {
-            return new TokenResponseModel({ message: invalidLoginMessage, succeeded: false });
+            await this.handleFailedLoginAttempt(user);
+            return this.createErrorResponse("Invalid login attempt.");
         }
 
-        if (user.isLockedOut || !user.isActive) {
-            const message = !user.isActive
-                ? "Your account has been disabled by an administrator."
-                : `Your account is locked due to too many login attempts.`;
-            return new TokenResponseModel({ message, succeeded: false });
+        if (this.isAccountLockedOrInactive(user)) {
+            return this.handleLockedOrInactiveAccount(user);
         }
- 
+
+        return this.handleSuccessfulLogin(user, command.model);
+    }
+
+    private async handleSuccessfulLogin(user: User, model: TokenRequestModel): Promise<TokenResponseModel> {
+        user.accessFailedCount = 0;
+        await this.userRepository.updateAsync(user);
+
         const access_token = await this.tokenService.generateJwtAsync(user);
         const refreshToken = await this.refreshTokenService.createAysnc(
-            access_token, 
-            user.id, 
-            command.model.deviceId, 
-            command.model.userAgent,
-            command.model.ipAddress 
+            access_token,
+            user.id,
+            model.deviceId,
+            model.userAgent,
+            model.ipAddress
         );
- 
-        //TODO: Send email notification of login with new ipAddress and deviceInfo
- 
+
+        // TODO: Send email notification of login with new ipAddress and deviceInfo
+
         return new TokenResponseModel({
             access_token,
             refresh_token: refreshToken.tokenValue,
             succeeded: true,
-            refreshTokenExpiryTime: refreshToken.expiryDateUtc.toDateString(), 
+            refreshTokenExpiryTime: refreshToken.expiryDateUtc.toDateString(),
         });
+    }
+
+    private async handleFailedLoginAttempt(user: User | null): Promise<void> {
+        if (user) {
+            user.accessFailedCount += 1;
+            await this.userRepository.updateAsync(user);
+        }
+    }
+
+    private isAccountLockedOrInactive(user: User): boolean {
+        return user.isLockedOut || !user.isActive;
+    }
+
+    private handleLockedOrInactiveAccount(user: User): TokenResponseModel {
+        const message = this.getAccountLockMessage(user);
+        return this.createErrorResponse(message);
+    }
+
+    private getAccountLockMessage(user: User): string {
+        if (!user.isActive) {
+            return "Your account has been disabled by an administrator.";
+        }
+
+        return user.accessFailedCount >= 5
+            ? "Your account is locked due to too many unsuccessful login attempts."
+            : "Your account has been locked due to suspicious activity.";
+    }
+
+    private createErrorResponse(message: string): TokenResponseModel {
+        return new TokenResponseModel({ message, succeeded: false });
     }
 }  

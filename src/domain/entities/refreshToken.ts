@@ -28,8 +28,8 @@ export class RefreshToken {
     @Column({ type: 'timestamp' })
     addedDateUtc: Date;
     
-    @Column({ type: 'timestamp', nullable: true })
-    expiryDateUtc?: Date;
+    @Column({ type: 'timestamp'  })
+    expiryDateUtc: Date;
     
     constructor(partial?: Partial<RefreshToken>) {
         Object.assign(this, partial);

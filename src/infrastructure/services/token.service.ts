@@ -4,6 +4,7 @@ import { Inject, Injectable } from "@nestjs/common";
 import { ITokenService } from "../../core/services/itoken.service";
 import { IRoleRepository } from "src/core/repositories/irole.repository";
 import configs from 'src/configs';
+import { JwtPayload } from 'src/core/utils/jwtPayload';
 
 @Injectable()
 export class TokenService implements ITokenService {
@@ -18,10 +19,24 @@ export class TokenService implements ITokenService {
         return this.generateEncryptedToken(claims);
     }
 
+    public async getPrincipalFromToken(token: string): Promise<JwtPayload> {
+        try {
+            const payload: JwtPayload = this.jwtService.verify(token, {
+                secret: configs.jwt.secret,
+                issuer: configs.jwt.issuer,
+                audience: configs.jwt.audience
+            });
+
+            return payload;
+        } catch (error) {
+            throw new Error('Invalid token');
+        }
+    }
+
     private generateEncryptedToken(claims: any[]): string {
         const token = this.jwtService.sign(claims, {
             secret: configs.jwt.secret,
-            expiresIn: `${configs.jwt.accessTokenExpiration}m`,
+            expiresIn: configs.jwt.accessTokenExpiration,
             issuer: configs.jwt.issuer,
             audience: configs.jwt.audience,
         });
