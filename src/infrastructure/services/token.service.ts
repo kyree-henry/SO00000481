@@ -1,9 +1,9 @@
 import configs from '../../configs';
 import { JwtService } from '@nestjs/jwt';
 import { Globals } from '../../core/globals';
-import { User } from "../../domain/entities/user.entity";
 import { Inject, Injectable } from "@nestjs/common";
 import { JwtPayload } from '../../core/utils/jwtPayload';
+import { User } from "../../domain/entities/user.entity";
 import { ITokenService } from "../../core/services/itoken.service";
 import { IRoleRepository } from "../../core/repositories/irole.repository";
 
@@ -26,8 +26,7 @@ export class TokenService implements ITokenService {
                 secret: configs.jwt.secret,
                 issuer: configs.jwt.issuer,
                 audience: configs.jwt.audience
-            });
-
+            }); 
             return payload;
         } catch (error) {
             throw new Error('Invalid token');

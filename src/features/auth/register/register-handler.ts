@@ -3,10 +3,10 @@ import { Inject } from "@nestjs/common";
 import { ApiProperty } from "@nestjs/swagger";
 import { UserType } from "../../../domain/enums";
 import { UserModel } from "../../user/userModel";
-import { password } from "../../../core/utils/validation";
+import { password } from "../../../core/utils/validation.util";
 import { User } from "../../../domain/entities/user.entity";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
-import { UserAlreadyExistsException } from "../../../core/errors/userErrors";
+import { UserAlreadyExistsException } from "../../../core/exceptions/user.exception";
 import { IUserRepository } from "../../../core/repositories/iuser.repository";
 
 export class RegisterModel {

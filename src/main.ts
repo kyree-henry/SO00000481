@@ -3,8 +3,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './modules/app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
-import { ErrorHandlersFilter } from './core/errors/error-handler-filter';
-import { SwaggerRedirectMiddleware } from './core/middlewares/swagger-redirect.middleware';
+import { ErrorHandlersFilter } from './core/exceptions/exceptionHandler.filter';
+import { SwaggerRedirectMiddleware } from './core/middlewares/swaggerRedirect.middleware';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

@@ -1,9 +1,9 @@
 import * as Joi from "joi";
 import configs from "../../../configs";
 import { Inject } from "@nestjs/common";
-import { hasIpChanged } from "../../../core/utils/ip";
+import { hasIpChanged } from "../../../core/utils/ip.util";
 import { TokenResponseModel } from "../tokenResponseModel";
-import { addDurationToNow } from "../../../core/utils/time";
+import { addDurationToNow } from "../../../core/utils/time.util";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { ITokenService } from "../../../core/services/itoken.service";
 import { IUserRepository } from "../../../core/repositories/iuser.repository";

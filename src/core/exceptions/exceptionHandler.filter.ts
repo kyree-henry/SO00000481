@@ -14,8 +14,8 @@ import {
 import { Response } from 'express';
 import { ProblemDocument } from 'http-problem-details';
 import { ValidationError } from 'joi';
-import { serializeObject } from '../utils/serialization';
-import { ApplicationException } from './appError';
+import { serializeObject } from '../utils/serialization.util';
+import { ApplicationException } from './application.exception';
 
 
 @Catch()

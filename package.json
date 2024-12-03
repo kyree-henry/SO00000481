@@ -6,7 +6,6 @@
   "license": "MIT",
   "scripts": {
     "build": "nest build",
-    "clean-build": "rm -rf .next && npm run build",
     "dev": "tsc -p tsconfig.json && nodemon src/main.ts --watch",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",

@@ -2,7 +2,7 @@ import * as Joi from "joi";
 import { Inject } from "@nestjs/common";
 import { UserModel } from "../userModel";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
-import { UserNotFoundException } from "../../../core/errors/userErrors";
+import { UserNotFoundException } from "../../../core/exceptions/user.exception";
 import { IUserRepository } from "../../../core/repositories/iuser.repository";
 
 

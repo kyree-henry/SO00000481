@@ -3,7 +3,7 @@ import configs from '../../configs';
 import { Repository } from "typeorm";
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from "@nestjs/typeorm";
-import { addDurationToNow } from '../../core/utils/time';
+import { addDurationToNow } from '../../core/utils/time.util';
 import { RefreshToken } from "../../domain/entities/refreshToken.entity";
 import { IRefreshTokenRepository } from "../../core/repositories/irefreshtoken.repository";
 

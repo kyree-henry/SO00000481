@@ -1,7 +1,7 @@
 import * as Joi from "joi";
 import * as path from "path";
 import * as dotenv from 'dotenv'
-import { ApplicationException } from "./core/errors/appError";
+import { ApplicationException } from "./core/exceptions/application.exception";
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 

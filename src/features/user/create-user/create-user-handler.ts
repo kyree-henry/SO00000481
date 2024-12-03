@@ -4,9 +4,9 @@ import { UserModel } from "../userModel";
 import { ApiProperty } from "@nestjs/swagger";
 import { UserType } from "../../../domain/enums";
 import { User } from "../../../domain/entities/user.entity";
-import { password } from "../../../core/utils/validation";
+import { password } from "../../../core/utils/validation.util";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
-import { UserAlreadyExistsException } from "../../../core/errors/userErrors";
+import { UserAlreadyExistsException } from "../../../core/exceptions/user.exception";
 import { IUserRepository } from "../../../core/repositories/iuser.repository";
 
 export class CreateUserModel {
