@@ -1,6 +1,7 @@
-import { Entity, Column, OneToMany } from 'typeorm';
-import { BaseEntity } from "../baseEntity";
 import { RoleClaim } from './roleClaim';
+import { BaseEntity } from "../baseEntity";
+import { RoleType } from '../../domain/enums';
+import { Entity, Column, OneToMany } from 'typeorm';
 
 @Entity()
 export class Role extends BaseEntity {
@@ -13,6 +14,13 @@ export class Role extends BaseEntity {
 
     @Column()
     normalizedName: string;
+
+    @Column({
+        type: 'enum',
+        enum: RoleType,
+        default: RoleType.Regular,
+    })
+    type: RoleType;
 
     @OneToMany(() => RoleClaim, roleClaims => roleClaims.role)
     roleClaims: RoleClaim[];

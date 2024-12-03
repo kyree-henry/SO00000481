@@ -74,14 +74,7 @@ export class RegisterHandler implements ICommandHandler<RegisterCommand> {
                 type: UserType.Guest,
             }), command.model.password);
  
-        const result = new UserModel({
-            id: user.id,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            isEmailVerified: user.emailConfirmed,
-        });
-
-        return result;
+ 
+        return new UserModel({ ...user }); 
     }
 } 

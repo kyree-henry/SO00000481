@@ -23,6 +23,12 @@ export class User extends BaseEntity {
     @Column()
     email: string;
 
+    @Column()
+    gender: string;
+
+    @Column()
+    phoneNumber: string;
+
     @Column({ nullable: true })
     normalizedEmail?: string;
 

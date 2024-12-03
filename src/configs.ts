@@ -45,7 +45,7 @@ const envVarsSchema = Joi.object()
         POSTGRES_PASSWORD: Joi.string()
             .default('postgres')
             .description('Postgres password'),
-        POSTGRES_Database: Joi.string()
+        POSTGRES_DATABASE: Joi.string()
             .default('default_database')
             .description('Postgres database name'),
         POSTGRES_SYNCHRONIZE: Joi.boolean()
@@ -82,7 +82,7 @@ export default {
         port: envVars.POSTGRES_PORT,
         username: envVars.POSTGRES_USERNAME,
         password: envVars.POSTGRES_PASSWORD,
-        database: envVars.POSTGRES_Database,
+        database: envVars.POSTGRES_DATABASE,
         synchronize: envVars.POSTGRES_SYNCHRONIZE,
         autoLoadEntities: envVars.POSTGRES_AUTO_LOAD_ENTITIES,
         entities: envVars.POSTGRES_ENTITIES,
