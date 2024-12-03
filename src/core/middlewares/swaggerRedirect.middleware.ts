@@ -1,8 +1,12 @@
 import configs from '../../configs';
-import { Request, Response, NextFunction } from 'express'; 
-  
-export function SwaggerRedirectMiddleware(req: Request, res: Response, next: NextFunction) {
-    const isDevelopment = process.env.NODE_ENV === 'development';
+import { Request, Response, NextFunction } from 'express';
+
+export function SwaggerRedirectMiddleware(
+    req: Request,
+    res: Response,
+    next: NextFunction
+) {
+    const isDevelopment = configs.env === 'development';
 
     if (req.originalUrl === '/' || req.originalUrl.includes('favicon.ico')) {
         if (isDevelopment) {

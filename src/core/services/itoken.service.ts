@@ -1,5 +1,5 @@
 import { User } from "../../domain/entities/user.entity";
-import { JwtPayload } from "../utils/jwtPayload";
+import { JwtPayload } from "../passport/jwtPayload";
   
   
 export interface ITokenService { 
