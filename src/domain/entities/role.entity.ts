@@ -1,6 +1,6 @@
-import { RoleClaim } from './roleClaim';
+import { RoleClaim } from './roleClaim.entity';
 import { BaseEntity } from "../baseEntity";
-import { RoleType } from '../../domain/enums';
+import { RoleType } from '../enums';
 import { Entity, Column, OneToMany } from 'typeorm';
 
 @Entity()
@@ -28,6 +28,6 @@ export class Role extends BaseEntity {
     constructor(request: Partial<Role> = {}) {
         super();
         Object.assign(this, request);
-        this.normalizedName = request.name.toUpperCase();
+        this.normalizedName = request.name?.toUpperCase();
     }
 } 

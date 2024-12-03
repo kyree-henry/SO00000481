@@ -1,7 +1,8 @@
+import * as path from 'path';
 import configs from '../../configs';
 import { DataSource, DataSourceOptions } from 'typeorm';
  
- export const postgresOptions: DataSourceOptions = {
+export const postgresOptions: DataSourceOptions = {
     type: 'postgres',
     host: configs.postgres.host,
     port: configs.postgres.port,
@@ -9,12 +10,11 @@ import { DataSource, DataSourceOptions } from 'typeorm';
     password: configs.postgres.password,
     database: configs.postgres.database,
     synchronize: configs.postgres.synchronize,
-    entities: [__dirname + configs.postgres.entities],
-    migrations: [__dirname + configs.postgres.migrations],
+    entities: [path.resolve(__dirname + configs.postgres.entities)],
+    migrations: [path.resolve(__dirname + configs.postgres.migrations)],
     logging: configs.postgres.logging,
     migrationsRun: configs.postgres.migrationsRun,
 };
-
-const dataSource = new DataSource(postgresOptions);
-
+  
+const dataSource = new DataSource(postgresOptions); 
 export default dataSource; 

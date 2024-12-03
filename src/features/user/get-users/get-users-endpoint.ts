@@ -17,7 +17,7 @@ export class GetUsersController {
     constructor(private readonly queryBus: CommandBus) {
     }
 
-    @Get('get')
+    @Get('getentries')
     @ApiResponse({ status: 200, description: 'OK' })
     @ApiResponse({ status: 401, description: 'UNAUTHORIZED' })
     @ApiResponse({ status: 400, description: 'BAD_REQUEST' })

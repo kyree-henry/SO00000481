@@ -17,7 +17,7 @@ export class GetUserQuery {
 
 const getUserQueryValidations = {
     params: Joi.object().keys({
-        id: Joi.string().uuid().required()
+        userId: Joi.string().required()
     })
 };
 
@@ -38,8 +38,13 @@ export class GetUserHandler implements ICommandHandler<GetUserQuery> {
             throw new UserNotFoundException(query.userId);
         }
  
-        const result = new UserModel({ 
-            ...user,
+        const result = new UserModel({  
+            id: user.id,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            gender: user.gender,
+            phoneNumber: user.phoneNumber,
             isEmailVerified: user.emailConfirmed,
         });
 

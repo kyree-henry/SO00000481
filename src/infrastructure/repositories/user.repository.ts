@@ -1,8 +1,8 @@
-import bcrypt from 'bcrypt';
-import { User } from "../../domain/entities/user";
+import * as bcrypt from 'bcrypt';
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository, SelectQueryBuilder } from "typeorm";
-import { UserRole } from '../../domain/entities/userRole';
+import { User } from "../../domain/entities/user.entity";
+import { UserRole } from '../../domain/entities/userRole.entity';
 import { forwardRef, Inject, Injectable } from "@nestjs/common"; 
 import { RoleNotFoundException } from '../../core/errors/roleError';
 import { IRoleRepository } from '../../core/repositories/irole.repository';

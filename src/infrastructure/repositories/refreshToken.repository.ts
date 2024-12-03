@@ -4,7 +4,7 @@ import { Repository } from "typeorm";
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from "@nestjs/typeorm";
 import { addDurationToNow } from '../../core/utils/time';
-import { RefreshToken } from "../../domain/entities/refreshToken";
+import { RefreshToken } from "../../domain/entities/refreshToken.entity";
 import { IRefreshTokenRepository } from "../../core/repositories/irefreshtoken.repository";
 
 @Injectable()

@@ -23,11 +23,11 @@ export class User extends BaseEntity {
     @Column()
     email: string;
 
-    @Column()
-    gender: string;
+    @Column({ nullable: true })
+    gender?: string;
 
-    @Column()
-    phoneNumber: string;
+    @Column({ nullable: true })
+    phoneNumber?: string;
 
     @Column({ nullable: true })
     normalizedEmail?: string;
@@ -57,7 +57,7 @@ export class User extends BaseEntity {
     constructor(request: Partial<User> = {}) {
         super();
         Object.assign(this, request);
-        this.normalizedEmail = request.email.toUpperCase();
+        this.normalizedEmail = request.email?.toUpperCase();
         this.registeredOn = new Date();
       } 
 }

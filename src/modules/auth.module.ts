@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtService } from '@nestjs/jwt';
 import { CqrsModule } from '@nestjs/cqrs';
-import { Role } from '../domain/entities/role';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from '../domain/entities/user';
-import { UserRole } from '../domain/entities/userRole';
-import { RoleClaim } from '../domain/entities/roleClaim';
-import { RefreshToken } from '../domain/entities/refreshToken';
+import { User } from '../domain/entities/user.entity';
+import { Role } from '../domain/entities/role.entity';
+import { UserRole } from '../domain/entities/userRole.entity';
+import { RoleClaim } from '../domain/entities/roleClaim.entity';
+import { RefreshToken } from '../domain/entities/refreshToken.entity';
 import { LoginHandler } from '../features/auth/login/login-handler';
 import { TokenService } from '../infrastructure/services/token.service';
 import { LoginController } from '../features/auth/login/login-endpoint';

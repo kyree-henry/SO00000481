@@ -1,12 +1,12 @@
 import { Response} from "express";
 import { CommandBus } from "@nestjs/cqrs";
-import { ApiResponse } from "@nestjs/swagger";
+import { ApiResponse, ApiTags } from "@nestjs/swagger";
 import { UserModel } from "../../user/userModel";
 import { RegisterCommand, RegisterModel } from "./register-handler";
 import { Body, Controller, HttpStatus, Post, Res } from "@nestjs/common";
 
 
-
+@ApiTags('Identities') 
 @Controller({
     path: `/identity`,
     version: '1',

@@ -1,4 +1,4 @@
-import { User } from "../../domain/entities/user";
+import { User } from "../../domain/entities/user.entity";
 import { JwtPayload } from "../utils/jwtPayload";
   
   

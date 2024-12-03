@@ -1,8 +1,8 @@
 import { In, Repository } from "typeorm";
-import { Role } from "../../domain/entities/role";
-import { User } from "../../domain/entities/user";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Inject, Injectable } from "@nestjs/common";
+import { Role } from "../../domain/entities/role.entity";
+import { User } from "../../domain/entities/user.entity";
 import { RoleAlreadyExistsException } from "../../core/errors/roleError";
 import { IRoleRepository } from "../../core/repositories/irole.repository";
 import { IUserRepository } from "../../core/repositories/iuser.repository";

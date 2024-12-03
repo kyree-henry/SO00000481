@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
-import { Role } from './role';
+import { Role } from './role.entity';
 
 @Entity()
 export class RoleClaim {

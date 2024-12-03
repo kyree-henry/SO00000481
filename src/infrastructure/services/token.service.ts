@@ -1,6 +1,7 @@
 import configs from '../../configs';
 import { JwtService } from '@nestjs/jwt';
-import { User } from "../../domain/entities/user";
+import { Globals } from '../../core/globals';
+import { User } from "../../domain/entities/user.entity";
 import { Inject, Injectable } from "@nestjs/common";
 import { JwtPayload } from '../../core/utils/jwtPayload';
 import { ITokenService } from "../../core/services/itoken.service";
@@ -47,7 +48,7 @@ export class TokenService implements ITokenService {
         const roles = await this.roleRepository.getByUserAsync(user);
 
         const roleClaims = roles.map((role) => ({
-            name: 'role',
+            name: Globals.ClaimTypes.Role,
             value: role.name,
         }));
 
@@ -59,12 +60,12 @@ export class TokenService implements ITokenService {
         );
 
         const claims = [
-            { name: 'sub', value: user.id },
-            { name: 'email', value: user.email },
-            { name: 'firstName', value: user.firstName },
-            { name: 'lastName', value: user.lastName },
-            { name: 'fullName', value: `${user.lastName} ${user.firstName}` },
-            { name: 'accountType', value: user.type },
+            { name: Globals.ClaimTypes.UserId, value: user.id },
+            { name: Globals.ClaimTypes.Email, value: user.email },
+            { name: Globals.ClaimTypes.GivenName, value: user.firstName },
+            { name: Globals.ClaimTypes.FamilyName, value: user.lastName },
+            { name: Globals.ClaimTypes.FullName, value: `${user.lastName} ${user.firstName}` },
+            { name: Globals.ClaimTypes.UserType, value: user.type },
             ...roleClaims,
             ...permissionClaims,
         ];
