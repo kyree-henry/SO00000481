@@ -7,15 +7,16 @@ import { Role } from '../domain/entities/role.entity';
 import { UserRole } from '../domain/entities/userRole.entity';
 import { RoleClaim } from '../domain/entities/roleClaim.entity';
 import { RefreshToken } from '../domain/entities/refreshToken.entity';
-import { LoginHandler } from '../features/auth/login/login-handler';
+import { LoginHandler } from '../features/auth/login/login.handler';
 import { TokenService } from '../infrastructure/services/token.service';
-import { LoginController } from '../features/auth/login/login-endpoint';
-import { RegisterHandler } from '../features/auth/register/register-handler';
+import { LoginController } from '../features/auth/login/login.endpoint';
+import { RegisterHandler } from '../features/auth/register/register.handler';
 import { RoleRepository } from '../infrastructure/repositories/role.repository';
 import { UserRepository } from '../infrastructure/repositories/user.repository';
-import { RegisterController } from '../features/auth/register/register-endpoint';
-import { RefreshTokenHandler } from '../features/auth/refresh-token/refresh-token-handler';
-import { RefreshTokenController } from '../features/auth/refresh-token/refresh-token-endpoint';
+import { RegisterController } from '../features/auth/register/register.endpoint';
+import { UserRoleRepository } from '../infrastructure/repositories/userRole.repository';
+import { RefreshTokenHandler } from '../features/auth/refresh-token/refresh-token.handler';
+import { RefreshTokenController } from '../features/auth/refresh-token/refresh-token.endpoint';
 import { RefreshTokenRepository } from '../infrastructure/repositories/refreshToken.repository';
 
 @Module({
@@ -32,6 +33,10 @@ import { RefreshTokenRepository } from '../infrastructure/repositories/refreshTo
         {
             provide: 'IUserRepository',
             useClass: UserRepository,
+        },
+        {
+            provide: 'IUserRoleRepository',
+            useClass: UserRoleRepository,
         },
         {
             provide: 'IRefreshTokenRepository',

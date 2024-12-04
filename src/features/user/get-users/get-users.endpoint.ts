@@ -1,6 +1,6 @@
-import { UserModel } from "../userModel";
+import { UserModel } from "../user.model";
 import { CommandBus } from "@nestjs/cqrs";
-import { GetUsersQuery } from "./get-users-handler";
+import { GetUsersQuery } from "./get-users.handler";
 import { Controller, Get, Query } from "@nestjs/common";
 import { PagedResult } from "domain/pagination/pagedResult";
 import { ApiBearerAuth, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
@@ -27,7 +27,7 @@ export class GetUsersController {
     @ApiQuery({ name: 'order', required: false, type: 'ASC', example: 'ASC' })
     @ApiQuery({ name: 'orderBy', required: false, type: '', example: 'id' })
     @ApiQuery({ name: 'searchTerm', required: false, type: '' })
-    public async getUsers(
+    public async GetEntries(
         @Query('pageSize') pageSize: number = 10,
         @Query('page') page: number = 1,
         @Query('order') order: 'ASC' | 'DESC' = 'ASC',

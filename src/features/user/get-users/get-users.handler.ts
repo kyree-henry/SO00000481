@@ -1,6 +1,6 @@
 import * as Joi from "joi";
 import { Inject } from "@nestjs/common";
-import { UserModel } from "../userModel";
+import { UserModel } from "../user.model";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { PagedResult } from "../../../domain/pagination/pagedResult";
 import { IUserRepository } from "../../../core/repositories/iuser.repository";
@@ -20,7 +20,7 @@ export class GetUsersQuery {
 const getUsersValidations = Joi.object<GetUsersQuery>({
     page: Joi.number().integer().min(1).default(1),
     pageSize: Joi.number().integer().min(1).default(10),
-    orderBy: Joi.string().valid('id', 'name', 'email').default('id'),
+    orderBy: Joi.string().valid('id', 'firstname', 'lastname' , 'email').default('id'),
     order: Joi.string().valid('ASC', 'DESC').default('ASC'),
     searchTerm: Joi.string().allow(null).optional()
 });

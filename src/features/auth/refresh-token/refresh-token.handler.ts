@@ -2,7 +2,7 @@ import * as Joi from "joi";
 import configs from "../../../configs";
 import { Inject } from "@nestjs/common";
 import { hasIpChanged } from "../../../core/utils/ip.util";
-import { TokenResponseModel } from "../tokenResponseModel";
+import { TokenResponseModel } from "../tokenResponse.model";
 import { addDurationToNow } from "../../../core/utils/time.util";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { ITokenService } from "../../../core/services/itoken.service";

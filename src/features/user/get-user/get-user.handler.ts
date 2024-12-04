@@ -1,9 +1,9 @@
 import * as Joi from "joi";
 import { Inject } from "@nestjs/common";
-import { UserModel } from "../userModel";
+import { UserModel } from "../user.model";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
-import { UserNotFoundException } from "../../../core/exceptions/user.exception";
 import { IUserRepository } from "../../../core/repositories/iuser.repository";
+import { UserNotFoundException } from "../../../core/exceptions/user.exception";
 
 
 export class GetUserQuery {

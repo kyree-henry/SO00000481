@@ -7,7 +7,7 @@ export interface IUserRepository {
     updateAsync(user: User): Promise<void>;
     deleteAsync(user: User): Promise<User>;
     getUserByIdAsync(id: string): Promise<User | null>;
-    createAysnc(user: User, password: string): Promise<User>; 
+    createAsync(user: User, password: string): Promise<User>; 
     getUserByEmailAsync(email: string): Promise<User | null>; 
     checkPasswordAsync(user: User, password: string): Promise<boolean>;
 

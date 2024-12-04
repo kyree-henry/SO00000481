@@ -14,5 +14,7 @@ export namespace Globals {
         public static readonly FamilyName = "http://basic-store.com/claims/familyname";
         public static readonly FullName = "http://basic-store.com/claims/fullname";
         public static readonly Role = "http://basic-store.com/claims/role";
+        
+        public static readonly Permission = "permission";
     }
 } 

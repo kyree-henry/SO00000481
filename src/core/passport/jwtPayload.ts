@@ -1,11 +1,11 @@
+import { Globals } from "../../core/globals";
+
 export interface JwtPayload {
-    sub: string;          
-    email: string;       
-    firstName: string;   
-    lastName: string;    
-    fullName: string;    
-    accountType: string;  
-    roles: string[];   
-    phoneNumber?: string; 
-    [key: string]: any; 
-  }
+  [Globals.ClaimTypes.UserId]: string;
+  [Globals.ClaimTypes.Email]: string;
+  [Globals.ClaimTypes.GivenName]: string;
+  [Globals.ClaimTypes.FamilyName]: string;
+  [Globals.ClaimTypes.FullName]: string;
+  [Globals.ClaimTypes.UserType]: string;
+  [key: string]: any;
+}

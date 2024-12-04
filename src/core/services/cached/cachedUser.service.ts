@@ -33,7 +33,7 @@ export class CachedUserService implements IUserRepository {
 
     }
 
-    createAysnc(user: User, password: string): Promise<User> {
+    createAsync(user: User, password: string): Promise<User> {
         throw new Error("Method not implemented.");
     }
 

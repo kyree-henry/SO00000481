@@ -1,6 +1,6 @@
-import { UserModel } from "../userModel";
+import { UserModel } from "../user.model";
 import { CommandBus } from "@nestjs/cqrs";
-import { GetUserQuery } from "./get-user-handler";
+import { GetUserQuery } from "./get-user.handler";
 import { Controller, Get, Query, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiResponse, ApiTags } from "@nestjs/swagger";
 
@@ -21,11 +21,9 @@ export class GetUserController {
     @ApiResponse({ status: 401, description: 'UNAUTHORIZED' })
     @ApiResponse({ status: 400, description: 'BAD_REQUEST' })
     @ApiResponse({ status: 403, description: 'FORBIDDEN' })
-    public async getUser(@Query('id') id: string): Promise<UserModel> {
+    public async GetById(@Query('userId') userId: string): Promise<UserModel> {
 
-        const result = await this.queryBus.execute(new GetUserQuery({
-            userId: id
-        }));
+        const result = await this.queryBus.execute(new GetUserQuery({ userId  }));
 
         return result;
     }

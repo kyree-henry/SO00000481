@@ -1,17 +1,22 @@
 import configs from '../../configs';
 import { Globals } from '../../core/globals';
 import { RoleType } from '../../domain/enums';
+import { Injectable, Inject } from '@nestjs/common';
 import { User } from '../../domain/entities/user.entity';
 import { Role } from '../../domain/entities/role.entity';
-import { Injectable, Inject } from '@nestjs/common';
+import { Permissions } from '../../core/utils/permissions.util'; 
+import { RoleClaim } from '../../domain/entities/roleClaim.entity';
 import { IUserRepository } from '../../core/repositories/iuser.repository';
 import { IRoleRepository } from '../../core/repositories/irole.repository';
+import { IRoleClaimRepository } from '../../core/repositories/iroleClaim.repository';
 
 @Injectable()
 export class DataSeeder {
     constructor(
+        private readonly permissions: Permissions, 
         @Inject('IUserRepository') private readonly userRepository: IUserRepository,
-        @Inject('IRoleRepository') private readonly roleRepository: IRoleRepository,
+        @Inject('IRoleRepository') private readonly roleRepository: IRoleRepository, 
+        @Inject('IRoleClaimRepository') private readonly roleClaimRepository: IRoleClaimRepository, 
     ) { }
 
     async initializeAsync(): Promise<void> {
@@ -37,7 +42,7 @@ export class DataSeeder {
 
         if (!(await this.userRepository.getUserByEmailAsync(SYSTEM_ADMIN.email))) {
 
-            await this.userRepository.createAysnc(SYSTEM_ADMIN, "@Admin@123");
+            await this.userRepository.createAsync(SYSTEM_ADMIN, "@Admin@123");
 
             await this.userRepository.addToRoleAsync(SYSTEM_ADMIN, Globals.Roles.Admin);
         }
@@ -54,22 +59,34 @@ export class DataSeeder {
         });
 
         if (!(await this.userRepository.getUserByEmailAsync(JOHN_DOE.email))) {
-            await this.userRepository.createAysnc(JOHN_DOE, "@Abc@123");
+            await this.userRepository.createAsync(JOHN_DOE, "@Abc@123");
         }
     }
 
     private async addAdministratorRoleAsync() {
 
-        let adminRoleInDb = await this.roleRepository.getRoleByNameAsync(Globals.Roles.Admin);
+        let adminRoleInDb = await this.roleRepository.getByNameAsync(Globals.Roles.Admin);
 
         if (!adminRoleInDb) {
             adminRoleInDb = await this.roleRepository.createAsync(new Role({
                 name: "Admin",
                 type: RoleType.System,
+                createdBy:'systemadmin@basicstore.com',
                 description: "Administrator role with full permissions",
             }));
         }
-
+ 
         /// TODO: add all system permissions to this role.
+        this.permissions.discoverControllerPermissions().map(async (permission) => {
+            const hasClaim = adminRoleInDb.roleClaims?.some(claim => claim.claimValue === permission);
+            if (!hasClaim) {
+                await this.roleClaimRepository.createAsync(new RoleClaim({
+                    claimValue: permission,
+                    roleId: adminRoleInDb.id,
+                    claimType: Globals.ClaimTypes.Permission
+                }));
+            } 
+        });
+
     }
 } 

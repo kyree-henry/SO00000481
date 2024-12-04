@@ -7,6 +7,7 @@ import { UserRole } from '../../domain/entities/userRole.entity';
 import { IRoleRepository } from '../../core/repositories/irole.repository';
 import { IUserRepository } from "../../core/repositories/iuser.repository";
 import { RoleNotFoundException } from '../../core/exceptions/role.exception';
+import { IUserRoleRepository } from '../../core/repositories/iuserRole.repository';
 import { UserAlreadyExistsException, UserAlreadyInRoleException } from "../../core/exceptions/user.exception";
 
 @Injectable()
@@ -14,15 +15,15 @@ export class UserRepository implements IUserRepository {
 
     constructor(
         @InjectRepository(User) private readonly userContext: Repository<User>,
-        @InjectRepository(UserRole) private readonly userRoleContext: Repository<UserRole>,
-        @Inject(forwardRef(() => 'IRoleRepository')) private readonly roleRepository: IRoleRepository
+         @Inject(forwardRef(() => 'IRoleRepository')) private readonly roleRepository: IRoleRepository,
+        @Inject(forwardRef(() => 'IUserRoleRepository')) private readonly userRoleRepository: IUserRoleRepository
     ) { }
 
     public async getAsync(): Promise<User[]> {
         return await this.userContext.find();
     }
 
-    public async createAysnc(user: User, password: string): Promise<User> {
+    public async createAsync(user: User, password: string): Promise<User> {
 
         if (await this.getUserByEmailAsync(user.email)) {
             throw new UserAlreadyExistsException(user.email);
@@ -86,14 +87,14 @@ export class UserRepository implements IUserRepository {
     }
 
     public async getRolesAsync(user: User): Promise<string[]> {
-        const userRoles = await this.userRoleContext.find({ where: { userId: user.id } });
+        const userRoles = await this.userRoleRepository.getByUserId(user.id);
         if (!userRoles || userRoles.length === 0) {
             return [];
         }
 
         const roleNames = await Promise.all(
             userRoles.map(async (userRole: UserRole) => {
-                const role = await this.roleRepository.getRoleByIdAsync(userRole.roleId);
+                const role = await this.roleRepository.getByIdAsync(userRole.roleId);
                 return role?.name;
             })
         );
@@ -107,20 +108,20 @@ export class UserRepository implements IUserRepository {
             throw new UserAlreadyInRoleException(user.email, '', roleName);
         }
 
-        const role = await this.roleRepository.getRoleByNameAsync(roleName);
+        const role = await this.roleRepository.getByNameAsync(roleName);
         const userRole = new UserRole({ 
             userId: user.id,
             roleId: role.id
          });
 
-        return await this.userRoleContext.save(userRole); 
+        return await this.userRoleRepository.createAsync(userRole); 
     }
 
     public async isInRoleAsync(user: User, roleName: string): Promise<UserRole | null> {
         
-        const role = await this.roleRepository.getRoleByNameAsync(roleName) 
+        const role = await this.roleRepository.getByNameAsync(roleName) 
         ?? (() => { throw new RoleNotFoundException('', roleName); })();
 
-        return await this.userRoleContext.findOne({ where: { userId: user.id, roleId: role?.id } }); 
+        return await this.userRoleRepository.getAsync(user.id, role.id); 
     }
 }

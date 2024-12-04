@@ -1,17 +1,18 @@
 import { Response } from "express";
-import { UserModel } from "../userModel";
-import { CommandBus } from "@nestjs/cqrs";
+ import { CommandBus } from "@nestjs/cqrs";
+ import { RoleModel } from "../role.model";
 import { ApiResponse, ApiTags } from "@nestjs/swagger";
-import { CreateUserCommand, CreateUserModel } from "./create-user-handler";
+import { CreateRoleCommand, CreateRoleModel } from "./create-role.handler";
+ import { PermissionsGuard } from "../../../core/passport/permissions.guard";
 import { Body, Controller, HttpStatus, Post, Res, UseGuards } from "@nestjs/common";
 
-@ApiTags('Users')
-@UseGuards()
+@ApiTags('Roles')
+@UseGuards(PermissionsGuard)
 @Controller({
-    path: `/user`,
+    path: `/role`,
     version: '1',
 })
-export class CreateUserController {
+export class CreateRoleController {
 
     constructor(private readonly commandBus: CommandBus) { }
 
@@ -20,10 +21,10 @@ export class CreateUserController {
     @ApiResponse({ status: 400, description: 'BAD_REQUEST' })
     @ApiResponse({ status: 403, description: 'FORBIDDEN' })
     @ApiResponse({ status: 201, description: 'CREATED' })
-    public async createUser(@Body() request: CreateUserModel, @Res() res: Response
-    ): Promise<UserModel> {
+    public async Create(@Body() request: CreateRoleModel, @Res() res: Response
+    ): Promise<RoleModel> {
 
-        const result = await this.commandBus.execute(new CreateUserCommand({
+        const result = await this.commandBus.execute(new CreateRoleCommand({
             model: request
         }));
 
