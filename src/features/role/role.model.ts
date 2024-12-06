@@ -19,6 +19,7 @@ export class PermissionModel {
 
     constructor(partial?: Partial<PermissionModel>) {
         Object.assign(this, partial);
+        this.roleClaims = partial?.roleClaims || [];
     }
 }
 

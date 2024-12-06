@@ -9,7 +9,7 @@ import { ApiBearerAuth, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
 @ApiBearerAuth()
 @ApiTags('Users')
 @Controller({
-    path: `/user`,
+    path: `/users`,
     version: '1',
 })
 export class GetUsersController {

@@ -18,11 +18,16 @@ import { UpdateRoleHandler } from '../features/role/update-role/update-role.hand
 import { GetRoleByIdHandler } from "../features/role/get-role/get-role-by-id.handler";
 import { UserRoleRepository } from '../infrastructure/repositories/userRole.repository';
 import { CreateRoleController } from "../features/role/create-role/create-role.endpoint";
+import { DeleteRoleController } from '../features/role/delete-role/delete-role.endpoint';
 import { UpdateRoleController } from '../features/role/update-role/update-role.endpoint';
 import { RoleClaimRepository } from '../infrastructure/repositories/roleClaim.repository';
 import { GetRoleByNameHandler } from "../features/role/get-role/get-role-by-name.handler";
+import { ActivateRoleHandler } from '../features/role/activate-role/activate-role.handler';
+import { ActivateRoleController } from '../features/role/activate-role/activate-role.endpoint';
 import { GetPermissionsHandler } from '../features/role/get-permissions/get-permissions.handler';
+import { DeactivateRoleHandler } from '../features/role/deactivate-role/deactivate-role.handler';
 import { GetPermissionsController } from '../features/role/get-permissions/get-permissions.endpoint';
+import { DeactivateRoleController } from '../features/role/deactivate-role/deactivate-role.endpoint';
 import { UpdatePermissionsHandler } from '../features/role/update-permissions/update-permissions.handler';
 import { UpdatePermissionsController } from '../features/role/update-permissions/update-permissions.endpoint';
 
@@ -34,6 +39,9 @@ import { UpdatePermissionsController } from '../features/role/update-permissions
         GetRoleController,
         UpdateRoleController,
         GetPermissionsController,
+        DeactivateRoleController,
+        ActivateRoleController,
+        DeleteRoleController,
         UpdatePermissionsController
     ],
     providers: [CreateRoleHandler,
@@ -42,6 +50,8 @@ import { UpdatePermissionsController } from '../features/role/update-permissions
         GetRoleByNameHandler,
         UpdateRoleHandler,
         GetPermissionsHandler,
+        ActivateRoleHandler,
+        DeactivateRoleHandler,
         UpdatePermissionsHandler,
         Permissions,
         JwtService,
