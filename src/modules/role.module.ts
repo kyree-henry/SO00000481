@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { CqrsModule } from "@nestjs/cqrs";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { Role } from "../domain/entities/role.entity";
@@ -43,6 +44,7 @@ import { UpdatePermissionsController } from '../features/role/update-permissions
         GetPermissionsHandler,
         UpdatePermissionsHandler,
         Permissions,
+        JwtService,
         MetadataScanner,
         DiscoveryService,
         {

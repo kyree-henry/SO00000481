@@ -1,14 +1,13 @@
 import configs from '../configs';
-import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from './user.module';
 import { RoleModule } from './role.module';
 import { AuthModule } from './auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from "@nestjs/passport";
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { Role } from '../domain/entities/role.entity';
 import { User } from '../domain/entities/user.entity';
-import { JwtStrategy } from '../core/passport/jwt.strategy';
-import { Permissions } from '../core/utils/permissions.util';
+ import { Permissions } from '../core/utils/permissions.util';
 import { UserRole } from '../domain/entities/userRole.entity';
 import { RoleClaim } from '../domain/entities/roleClaim.entity';
 import { DataSeeder } from '../infrastructure/services/data.seeder';
@@ -48,7 +47,7 @@ import { MiddlewareConsumer, Module, NestModule, OnApplicationBootstrap } from '
       },
     ]),
   ],
-  providers: [JwtStrategy, PermissionsGuard, DataSeeder, Permissions, MetadataScanner, DiscoveryService,
+  providers: [JwtService, PermissionsGuard, DataSeeder, Permissions, MetadataScanner, DiscoveryService,
     {
       provide: 'IUserRepository',
       useClass: UserRepository,

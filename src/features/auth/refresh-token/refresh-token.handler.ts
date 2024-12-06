@@ -1,6 +1,8 @@
 import * as Joi from "joi";
 import configs from "../../../configs";
 import { Inject } from "@nestjs/common";
+import { ApiProperty } from "@nestjs/swagger";
+import { Globals } from "../../../core/globals";
 import { hasIpChanged } from "../../../core/utils/ip.util";
 import { TokenResponseModel } from "../tokenResponse.model";
 import { addDurationToNow } from "../../../core/utils/time.util";
@@ -10,10 +12,20 @@ import { IUserRepository } from "../../../core/repositories/iuser.repository";
 import { IRefreshTokenRepository } from "../../../core/repositories/irefreshtoken.repository";
 
 export class RefreshTokenRequestModel {
+
+    @ApiProperty()
     userAgent: string;
+
+    @ApiProperty()
     ipAddress: string;
+
+    @ApiProperty()
     deviceId: string;
+
+    @ApiProperty()
     access_token: string;
+
+    @ApiProperty()
     refresh_token: string;
 
     constructor(request: Partial<RefreshTokenRequestModel> = {}) {
@@ -49,9 +61,8 @@ export class RefreshTokenHandler implements ICommandHandler<RefreshTokenCommand>
 
         await refreshTokenValidations.validateAsync(command.model);
 
-        const userPrincipal = await this.tokenService.getPrincipalFromToken(command.model.access_token);
-
-        const user = await this.userRepository.getUserByEmailAsync(userPrincipal.email);
+        const userPrincipal = await this.tokenService.getPrincipalFromToken(command.model.access_token); 
+        const user = await this.userRepository.getUserByIdAsync(userPrincipal[Globals.ClaimTypes.UserId]);
         if (!user) {
             throw new Error("User associated with the token does not exist.");
         }

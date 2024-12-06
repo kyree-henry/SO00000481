@@ -2,14 +2,13 @@ import * as Joi from "joi";
 import { Inject } from "@nestjs/common";
 import { ApiProperty } from "@nestjs/swagger";
 import { User } from "../../../domain/entities/user.entity";
-import { password } from "../../../core/utils/validation.util";
 import { TokenResponseModel } from "../tokenResponse.model";
+import { password } from "../../../core/utils/validation.util";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { ITokenService } from "../../../core/services/itoken.service";
 import { IUserRepository } from "../../../core/repositories/iuser.repository";
 import { IRefreshTokenRepository } from "../../../core/repositories/irefreshtoken.repository";
-
-
+ 
 export class TokenRequestModel {
     @ApiProperty()
     email: string;
@@ -58,7 +57,7 @@ export class LoginHandler implements ICommandHandler<LoginCommand> {
 
     public async execute(command: LoginCommand): Promise<TokenResponseModel> {
 
-        await loginValidations.validateAsync(command);
+        await loginValidations.validateAsync(command.model);
 
         const user = await this.userRepository.getUserByEmailAsync(command.model.email);
         if (!user || !(await this.userRepository.checkPasswordAsync(user, command.model.password))) {

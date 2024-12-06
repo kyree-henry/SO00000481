@@ -1,9 +1,9 @@
 import { Response } from "express";
- import { CommandBus } from "@nestjs/cqrs";
- import { RoleModel } from "../role.model";
+import { CommandBus } from "@nestjs/cqrs";
+import { RoleModel } from "../role.model";
 import { ApiResponse, ApiTags } from "@nestjs/swagger";
 import { CreateRoleCommand, CreateRoleModel } from "./create-role.handler";
- import { PermissionsGuard } from "../../../core/passport/permissions.guard";
+import { PermissionsGuard } from "../../../core/passport/permissions.guard";
 import { Body, Controller, HttpStatus, Post, Res, UseGuards } from "@nestjs/common";
 
 @ApiTags('Roles')

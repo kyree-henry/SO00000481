@@ -1,4 +1,4 @@
-import geoip from 'geoip-lite';
+import * as geoip from 'geoip-lite';
 
 export interface GeoLocationDetails {
     country: string | null;
@@ -10,20 +10,18 @@ export interface GeoLocationDetails {
     ipAddress: string;
 }
 
-export function hasIpChanged(currentIp: string, storedIp: string): boolean {
-    const currentIpGeo = geoip.lookup(currentIp);
-    const storedIpGeo = geoip.lookup(storedIp);
+export function hasIpChanged(sourceIp: string, targetIp: string): boolean {
+    const sourceGeoInfo = geoip.lookup(sourceIp);
+    const targetGeoInfo = geoip.lookup(targetIp);
 
-    if (currentIpGeo && storedIpGeo) {
-        const isDifferentCountry = currentIpGeo.country !== storedIpGeo.country;
-        const isDifferentCity = currentIpGeo.city !== storedIpGeo.city;
-
-        if (isDifferentCountry || isDifferentCity) {
-            return true;
-        }
+    if (!sourceGeoInfo || !targetGeoInfo) {
+        return false;
     }
 
-    return false;
+    return sourceGeoInfo.country !== targetGeoInfo.country;
+    // const isInDifferentCity = sourceGeoInfo.city !== targetGeoInfo.city;
+
+    // return isInDifferentCountry || isInDifferentCity;
 }
 
 export function getGeolocationDetails(ipAddress: string): GeoLocationDetails | null {

@@ -32,8 +32,7 @@ export class RefreshTokenRepository implements IRefreshTokenRepository {
             tokenValue: this.GenerateToken(),
             expiryDateUtc: addDurationToNow(configs.jwt.refreshTokenExpiration),
         });
-        
-
+         
         return await this.refreshTokenContext.save(refreshToken);
     }
 

@@ -52,7 +52,7 @@ export class UserRepository implements IUserRepository {
     }
 
     public async getUserByEmailAsync(email: string): Promise<User | null> {
-        const normalizedEmail = email.toUpperCase();
+        const normalizedEmail = email?.toUpperCase();
         return await this.userContext.findOne({ where: { normalizedEmail } });
     }
 

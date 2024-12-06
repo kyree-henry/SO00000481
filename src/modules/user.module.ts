@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { CqrsModule } from "@nestjs/cqrs";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { Role } from "../domain/entities/role.entity";
@@ -18,7 +19,7 @@ import { CreateUserController } from "../features/user/create-user/create-user.e
 @Module({
   imports: [CqrsModule, TypeOrmModule.forFeature([User, Role, RoleClaim, UserRole])],
   controllers: [CreateUserController, GetUsersController, GetUserController],
-  providers: [CreateUserHandler, GetUsersHandler, GetUserHandler,
+  providers: [JwtService, CreateUserHandler, GetUsersHandler, GetUserHandler,
     {
       provide: 'IUserRepository',
       useClass: UserRepository,

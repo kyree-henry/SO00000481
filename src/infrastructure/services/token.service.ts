@@ -22,18 +22,17 @@ export class TokenService implements ITokenService {
 
     public async getPrincipalFromToken(token: string): Promise<JwtPayload> {
         try {
-            const payload: JwtPayload = this.jwtService.verify(token, {
-                secret: configs.jwt.secret,
-                issuer: configs.jwt.issuer,
-                audience: configs.jwt.audience
-            }); 
+            const payload: JwtPayload = this.jwtService.decode(token);
+            if (!payload) {
+                throw new Error('Invalid token: Decoding failed');
+            }
             return payload;
         } catch (error) {
             throw new Error('Invalid token');
         }
     }
 
-    private generateEncryptedToken(claims: any[]): string {
+    private generateEncryptedToken(claims: any): string {
         const token = this.jwtService.sign(claims, {
             secret: configs.jwt.secret,
             expiresIn: configs.jwt.accessTokenExpiration,
@@ -43,31 +42,24 @@ export class TokenService implements ITokenService {
         return token;
     }
 
-    private async getClaimsAsync(user: User): Promise<any[]> {
+    private async getClaimsAsync(user: User): Promise<any> {
         const roles = await this.roleRepository.getByUserAsync(user);
-
-        const roleClaims = roles.map((role) => ({
-            name: Globals.ClaimTypes.Role,
-            value: role.name,
-        }));
+        const roleClaims = roles.map((role) => role.name);
 
         const permissionClaims = roles.flatMap((role) =>
-            role.roleClaims.map((claim) => ({
-                name: claim.claimType,
-                value: claim.claimValue,
-            })),
+            role.roleClaims.map((claim) => claim.claimValue)
         );
 
-        const claims = [
-            { name: Globals.ClaimTypes.UserId, value: user.id },
-            { name: Globals.ClaimTypes.Email, value: user.email },
-            { name: Globals.ClaimTypes.GivenName, value: user.firstName },
-            { name: Globals.ClaimTypes.FamilyName, value: user.lastName },
-            { name: Globals.ClaimTypes.FullName, value: `${user.lastName} ${user.firstName}` },
-            { name: Globals.ClaimTypes.UserType, value: user.type },
-            ...roleClaims,
-            ...permissionClaims,
-        ];
+        const claims = {
+            [Globals.ClaimTypes.UserId]: user.id,
+            [Globals.ClaimTypes.Email]: user.email,
+            [Globals.ClaimTypes.GivenName]: user.firstName,
+            [Globals.ClaimTypes.FamilyName]: user.lastName,
+            [Globals.ClaimTypes.FullName]: `${user.lastName} ${user.firstName}`,
+            [Globals.ClaimTypes.UserType]: user.type,
+            [Globals.ClaimTypes.Role]: roleClaims,
+            [Globals.ClaimTypes.Permission]: permissionClaims,
+        };
 
         return claims;
     }

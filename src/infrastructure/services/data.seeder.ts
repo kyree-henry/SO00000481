@@ -1,7 +1,7 @@
 import configs from '../../configs';
 import { Globals } from '../../core/globals';
-import { RoleType } from '../../domain/enums';
 import { Injectable, Inject } from '@nestjs/common';
+import { RoleType, UserType } from '../../domain/enums';
 import { User } from '../../domain/entities/user.entity';
 import { Role } from '../../domain/entities/role.entity';
 import { Permissions } from '../../core/utils/permissions.util'; 
@@ -37,6 +37,7 @@ export class DataSeeder {
             lastName: 'Admin',
             email: 'systemadmin@basicstore.com',
             emailConfirmed: true,
+            type: UserType.Admin,
             createdBy: 'systemadmin@basicstore.com',
         });
 

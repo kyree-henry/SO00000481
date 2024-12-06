@@ -26,7 +26,7 @@ export function parseDuration(duration: string): number {
   }
    
   export function addDurationToNow(duration: string): Date {
-    const currentTime = new Date(Date.UTC(0)); 
+    const currentTime = new Date(); 
     const durationInMilliseconds = parseDuration(duration);  
   
     currentTime.setTime(currentTime.getTime() + durationInMilliseconds);  
