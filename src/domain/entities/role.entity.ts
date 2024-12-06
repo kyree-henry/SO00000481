@@ -22,6 +22,12 @@ export class Role extends BaseEntity {
     })
     type: RoleType;
 
+    @Column({ default: false })
+    isDisabled: boolean;
+
+    @Column({ type: 'timestamp', nullable: true })
+    disabledUntil?: Date;
+
     @OneToMany(() => RoleClaim, roleClaims => roleClaims.role)
     roleClaims: RoleClaim[];
 
