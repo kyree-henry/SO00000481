@@ -7,7 +7,7 @@ import { PassportModule } from "@nestjs/passport";
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { Role } from '../domain/entities/role.entity';
 import { User } from '../domain/entities/user.entity';
- import { Permissions } from '../core/utils/permissions.util';
+import { Permissions } from '../core/utils/permissions.util';
 import { UserRole } from '../domain/entities/userRole.entity';
 import { RoleClaim } from '../domain/entities/roleClaim.entity';
 import { DataSeeder } from '../infrastructure/services/data.seeder';
@@ -16,6 +16,7 @@ import { postgresOptions } from '../infrastructure/persistence/data.source';
 import { DiscoveryService, MetadataScanner, RouterModule } from '@nestjs/core';
 import { UserRepository } from '../infrastructure/repositories/user.repository';
 import { RoleRepository } from '../infrastructure/repositories/role.repository';
+import { HttpContextMiddleware } from '../core/middlewares/httpContext.middleware';
 import { UserRoleRepository } from '../infrastructure/repositories/userRole.repository';
 import { RoleClaimRepository } from '../infrastructure/repositories/roleClaim.repository';
 import { MiddlewareConsumer, Module, NestModule, OnApplicationBootstrap } from '@nestjs/common';
@@ -68,14 +69,16 @@ import { MiddlewareConsumer, Module, NestModule, OnApplicationBootstrap } from '
 })
 export class AppModule implements OnApplicationBootstrap, NestModule {
   constructor(
-    private readonly dataSeeder: DataSeeder 
+    private readonly dataSeeder: DataSeeder
   ) { }
 
   configure(consumer: MiddlewareConsumer) {
-
+    consumer
+      .apply(HttpContextMiddleware)
+      .forRoutes('*');
   }
 
   async onApplicationBootstrap(): Promise<void> {
-    await this.dataSeeder.initializeAsync(); 
-   }
+    await this.dataSeeder.initializeAsync();
+  }
 } 
